@@ -4,6 +4,8 @@
  *
  */
 
+/** comment to commit */
+
 document.addEventListener('DOMContentLoaded', function () {
 
   const cache = "?_=" + new Date().valueOf();
