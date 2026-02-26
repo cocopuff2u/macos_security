@@ -66,7 +66,8 @@ def collect_established_benchmarks(
             established_benchmarks_set.add(odv)
 
     # remove "hint" from available benchmarks
-    established_benchmarks_set.remove("hint")
+    if "hint" in established_benchmarks_set:
+        established_benchmarks_set.remove("hint")
 
     return sorted(established_benchmarks_set)
 
@@ -171,7 +172,6 @@ def generate_baseline(args: argparse.Namespace) -> None:
     all_rules: list[Macsecurityrule] = Macsecurityrule.collect_all_rules(
         args.os_name, args.os_version, args.tailor, parent_values="Default"
     )
-
     all_tags, benchmark_map = collect_tags_and_benchmarks(all_rules)
 
     established_benchmarks: tuple[str, ...] = collect_established_benchmarks(all_rules)

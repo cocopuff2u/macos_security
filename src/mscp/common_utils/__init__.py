@@ -28,7 +28,7 @@ from .mscp_data import get_mscp_data, mscp_data
 from .run_command import run_command
 from .sanitize_input import sanitize_input
 from .prompt_for_odv import prompt_for_odv
-from .validate_rules import validate_yaml_file
+from .validate_rules import validate_yaml_file, validate_rule_folder_structure
 from .version_data import get_version_data
 
 __all__ = [
@@ -62,4 +62,5 @@ __all__ = [
     "logger",
     "supported_languages",
     "collect_overrides",
+    "validate_rule_folder_structure",
 ]

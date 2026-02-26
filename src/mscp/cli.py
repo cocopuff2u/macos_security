@@ -8,7 +8,14 @@ from pathlib import Path
 
 # Local python modules
 from .admin_utils import build_all_baselines, add_new_rule
-from .common_utils import logger, set_logger, validate_yaml_file, supported_languages
+from .common_utils import (
+    logger,
+    set_logger,
+    config,
+    validate_yaml_file,
+    validate_rule_folder_structure,
+    supported_languages,
+)
 from .generate import (
     generate_baseline,
     generate_guidance,
@@ -91,6 +98,14 @@ def parse_cli() -> None:
         default=get_macos_version(),
         type=float,
         help="Operating system version (eg: 14.0, 15.0).",
+    )
+
+    parser.add_argument(
+        "-R",
+        "--rules_dir",
+        default=config["defaults"]["rules_dir"],
+        type=validate_rule_folder_structure,
+        help="Path to directory containing the library of rule files.",
     )
 
     # Sub Parsers for individual commands
@@ -403,6 +418,7 @@ def parse_cli() -> None:
     validate_parser.add_argument(
         "-a",
         "--all_validation",
+        default=False,
         help="Show all validation output.",
         action="store_true",
     )
@@ -501,6 +517,9 @@ def parse_cli() -> None:
             "macOS 13 and below is not supported, please use mSCP version 1.0."
         )
         sys.exit()
+
+    if not args.rules_dir == config["defaults"]["rules_dir"]:
+        config["defaults"]["rules_dir"] = args.rules_dir
 
     if args.subcommand == "guidance":
         if args.os_name != "macos" and args.script:

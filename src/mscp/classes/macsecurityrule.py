@@ -406,7 +406,7 @@ class Macsecurityrule(BaseModelWithAccessors):
                 )
                 continue
 
-            rule_yaml["rule_id"] = rule_yaml.pop("id")
+            rule_yaml["rule_id"] = rule_yaml.pop("id", rule_id)
 
             # process any customized rules
             customized_fields = []

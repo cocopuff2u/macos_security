@@ -3,7 +3,7 @@
 from .baseline import Author, Baseline, Profile
 
 # from .filehandler import FileHandler
-from .macsecurityrule import Macsecurityrule
+from .macsecurityrule import Macsecurityrule, Sectionmap
 from .payload import Payload
 
 __all__ = [
@@ -12,4 +12,5 @@ __all__ = [
     "Payload",
     "Author",
     "Profile",
+    "Sectionmap",
 ]
