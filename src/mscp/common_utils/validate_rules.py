@@ -13,6 +13,15 @@ from .logger_instance import logger
 # Additional python modules
 
 
+def get_rule_identifier(rule_file: Path) -> str:
+    rule_yaml = open_file(rule_file)
+
+    if "id" in rule_yaml:
+        return rule_yaml["id"]
+    else:
+        return rule_file.stem
+
+
 def validate_yaml_file(args: argparse.Namespace) -> None:
     schema: dict = open_file(Path(SCHEMA_PATH))
     validator = Draft202012Validator(schema)
@@ -31,23 +40,25 @@ def validate_yaml_file(args: argparse.Namespace) -> None:
         f"Validating {len(yaml_files)} YAML files in '{config['defaults']['rules_dir']}'...\n"
     )
 
+    discovered_rules = []
     for yaml in yaml_files:
         data: dict = open_file(yaml)
+        if get_rule_identifier(yaml) in discovered_rules:
+            print(f"⚠️ WARNING:   {yaml} may be a duplicate rule")
+        else:
+            discovered_rules.append(get_rule_identifier(yaml))
+
         try:
             validator.validate(data)
             if args.all_validation:
                 print(f"✅ VALID:   {yaml}")
                 logger.info(f"✅ VALID:   {yaml}")
         except ValidationError as e:
-            print(f"❌ INVALID: {yaml}")
-            print(f"   → {e.message}")
-            logger.warning(f"❌ INVALID: {yaml}")
-            logger.warning(f"   → {e.message}")
+            print(f"❌ INVALID: {yaml} → {e.message}")
+            logger.warning(f"❌ INVALID: {yaml} → {e.message}")
         except Exception as e:
-            print(f"⚠️ ERROR:   {yaml}")
-            print(f"   → {e}")
-            logger.error(f"⚠️ ERROR:   {yaml}")
-            logger.error(f"   → {e}")
+            print(f"⚠️ ERROR:   {yaml} → {e}")
+            logger.error(f"⚠️ ERROR:   {yaml} → {e}")
 
 
 def validate_rule_folder_structure(path_str: str) -> Path:
