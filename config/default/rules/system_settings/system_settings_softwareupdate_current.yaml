@@ -51,6 +51,8 @@ platforms:
         - name: cis_lvl2
         - name: disa_stig
           severity: medium
+        - name: nlmapgov_plus
+        - name: nlmapgov_base
       enforcement_info:
         fix:
           additional_info: 'NOTE: See discussion on how to install software updates.'
@@ -60,6 +62,8 @@ platforms:
         - name: cis_lvl2
         - name: disa_stig
           severity: medium
+        - name: nlmapgov_plus
+        - name: nlmapgov_base
       enforcement_info:
         check:
           shell: |-
@@ -105,11 +109,13 @@ platforms:
         additional_info: NOTE - This will apply to the whole system
 odv:
   hint:
-    description: Maximum Days of Deferral
-  recommended: 30
-  cis_lvl1: 30
-  cis_lvl2: 30
-  stig: 30
+    description: Maximum Days of Deferral (e.g. 30d)
+  recommended: 30d
+  cis_lvl1: 30d
+  cis_lvl2: 30d
+  nlmapgov_base: 7d
+  nlmapgov_plus: 7d
+  disa_stig: 30d
 tags:
   - cisv8
   - 800-53r5_low
@@ -118,5 +124,3 @@ tags:
   - 800-171
   - cmmc_lvl2
   - cmmc_lvl1
-  - nlmapgov_base
-  - nlmapgov_plus

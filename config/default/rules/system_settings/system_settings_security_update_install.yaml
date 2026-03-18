@@ -1,7 +1,7 @@
 id: system_settings_security_update_install
 title: Enforce Automatic Installs of Available Security Updates using DDM.
 discussion: |
-  Ensure that available security updates are installed as soon as they are available from Apple and that the user cannot modify the setting within System Settings.
+  Ensure that available security updates and Background Security Improvements are installed as soon as they are available from Apple and that the user cannot modify the setting within System Settings.
 references:
   nist:
     cce:
@@ -22,7 +22,10 @@ references:
       - 7.7
 platforms:
   macOS:
-    '26.0': {}
+    '26.0':
+      benchmarks:
+        - name: nlmapgov_plus
+        - name: nlmapgov_base
     enforcement_info:
       check:
         shell: /usr/bin/plutil -convert json /var/db/softwareupdate/SoftwareUpdateDDMStatePersistence.plist -o - | /usr/bin/jq --raw-output .'SUCorePersistedStatePolicyFields.SUCoreDDMDeclarationGlobalSettings.automaticallyInstallSystemAndSecurityUpdates'

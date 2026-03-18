@@ -58,12 +58,14 @@ platforms:
         - name: cis_lvl2
         - name: disa_stig
           severity: medium
+        - name: nlmapgov_plus
     '15.0':
       benchmarks:
         - name: cis_lvl1
         - name: cis_lvl2
         - name: disa_stig
           severity: medium
+        - name: nlmapgov_plus
     '14.0':
       benchmarks:
         - name: cis_lvl1
@@ -121,7 +123,8 @@ odv:
   recommended: authenticate-session-owner
   cis_lvl1: authenticate-session-owner
   cis_lvl2: authenticate-session-owner
-  stig: authenticate-session-owner
+  nlmapgov_plus: authenticate-session-owner
+  disa_stig: authenticate-session-owner
 tags:
   - 800-53r5_low
   - 800-53r5_moderate
@@ -133,7 +136,6 @@ tags:
   - cmmc_lvl2
   - cmmc_lvl1
   - cnssi-1253_moderate
-  - nlmapgov_plus
 mobileconfig_info:
   - PayloadType: com.apple.loginwindow
     PayloadContent:

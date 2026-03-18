@@ -5,8 +5,6 @@ discussion: |
 references:
   nist:
     cce:
-      macos_26:
-        - CCE-95273-9
       macos_15:
         - CCE-94270-6
       macos_14:
@@ -25,8 +23,9 @@ references:
       - SI.L1-3.14.4
 platforms:
   macOS:
-    '26.0': {}
-    '15.0': {}
+    '15.0':
+      benchmarks:
+        - name: nlmapgov_plus
     '14.0': {}
     enforcement_info:
       check:
@@ -48,7 +47,6 @@ tags:
   - cmmc_lvl2
   - cmmc_lvl1
   - cnssi-1253_moderate
-  - nlmapgov_plus
 mobileconfig_info:
   - PayloadType: com.apple.applicationaccess
     PayloadContent:
