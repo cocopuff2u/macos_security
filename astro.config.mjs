@@ -127,6 +127,7 @@ head: [
 					items: [
 						{ label: 'Generate Mapping', link: '/other/generate-mapping/' },
 						{ label: 'Generate SCAP', link: '/other/generate-scap/' },
+						{ label: 'Generate Localization', link: '/other/generate-localization/' },
 					],
 				},
 				{
