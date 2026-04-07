@@ -231,6 +231,13 @@ mSCP 2.0 is under active development and should not be used in production. Pleas
 ./mscp.py guidance custom/baselines/800-53r5_moderate_macos_26.0.yaml -m
 ```
 
+**Generate documentation in a specific language:**
+```bash
+./mscp.py guidance custom/baselines/800-53r5_moderate_macos_26.0.yaml -L de
+```
+
+The default language is English (`en`). Available languages are determined by the locales present in `config/locales/`. See <a href={`${base}other/generate-localization/`}>Generate Localization</a> for how to create and compile translation files.
+
   </TabItem>
   <TabItem label="mSCP 1.0">
 

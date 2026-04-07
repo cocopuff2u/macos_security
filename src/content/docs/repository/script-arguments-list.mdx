@@ -101,6 +101,39 @@ Creates custom rules and baselines for unsupported compliance frameworks.
 | `-c CSV, --csv CSV` | Path to CSV mapping file (required) |
 | `-f FRAMEWORK, --framework FRAMEWORK` | Source framework to map from (default: `800-53r5`) |
 
+---
+
+### mscp.py admin translation-json
+
+Extracts all translatable strings into a JSON template file.
+
+```bash
+./mscp.py admin translation-json [OPTIONS]
+```
+
+| Argument | Description |
+|:---------|:------------|
+| `-o OUTPUT, --output OUTPUT` | Output file path (default: `messages.json`) |
+| `-d DOMAIN, --domain DOMAIN` | Translation domain (default: `messages`) |
+
+---
+
+### mscp.py admin mo-from-json
+
+Compiles a translated JSON file into a binary `.mo` file for use with gettext.
+
+```bash
+./mscp.py admin mo-from-json JSON_FILE [OPTIONS]
+```
+
+| Argument | Description |
+|:---------|:------------|
+| `JSON_FILE` | Path to the translated JSON file (required) |
+| `-l LOCALE, --locale LOCALE` | Target locale code, e.g. `de`, `fr` (required) |
+| `-m MO_FILE, --mo_file MO_FILE` | Output `.mo` filename (default: `messages.mo`) |
+| `-d DOMAIN, --domain DOMAIN` | Translation domain (default: `messages`) |
+| `-f, --use_fuzzy` | Enable fuzzy translation matching |
+
   </TabItem>
   <TabItem label="mSCP 1.0">
 

@@ -1,0 +1,130 @@
+---
+title: Generate Localization
+description: Create and compile translation files to generate guidance in other languages.
+---
+
+import { Steps, FileTree, Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+export const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+
+The localization workflow lets you generate guidance documents in languages other than English. It involves generating a JSON template of translatable strings, translating them, and compiling the result into a format the tool can use.
+
+<Aside type="note">
+Localization is only available in mSCP 2.0.
+</Aside>
+
+---
+
+## Overview
+
+<Steps>
+
+1. **Generate a translation template**
+
+   Extract all translatable strings into a JSON file:
+
+   ```bash
+   ./mscp.py admin translation-json
+   ```
+
+   This creates `messages.json` in the `build/` output directory.
+
+2. **Translate the strings**
+
+   Open `messages.json` and fill in the translated values for each string.
+
+3. **Compile to a `.mo` file**
+
+   Convert the translated JSON into a binary format:
+
+   ```bash
+   ./mscp.py admin mo-from-json build/messages.json -l de
+   ```
+
+   This creates `build/locale/de/LC_MESSAGES/messages.mo`.
+
+4. **Generate guidance in your language**
+
+   ```bash
+   ./mscp.py guidance custom/baselines/800-53r5_moderate_macos_26.0.yaml -L de
+   ```
+
+</Steps>
+
+---
+
+## Command Reference
+
+### Generate Translation Template
+
+```bash
+./mscp.py admin translation-json [OPTIONS]
+```
+
+| Flag | Description |
+|:-----|:------------|
+| `-o OUTPUT` | Output file path (default: `messages.json`) |
+| `-d DOMAIN` | Translation domain (default: `messages`) |
+
+**Example — custom output path:**
+```bash
+./mscp.py admin translation-json -o ~/Desktop/translations.json
+```
+
+---
+
+### Compile Translations to MO
+
+```bash
+./mscp.py admin mo-from-json JSON_FILE [OPTIONS]
+```
+
+| Flag | Description |
+|:-----|:------------|
+| `JSON_FILE` | Path to the translated JSON file (required) |
+| `-l LOCALE` | Target locale code, e.g. `de`, `fr`, `ja` (required) |
+| `-m MO_FILE` | Output `.mo` filename (default: `messages.mo`) |
+| `-d DOMAIN` | Translation domain (default: `messages`) |
+| `-f` | Enable fuzzy translation matching |
+
+**Example — compile German translations:**
+```bash
+./mscp.py admin mo-from-json build/messages.json -l de
+```
+
+The compiled file is placed at `build/locale/{LOCALE}/LC_MESSAGES/messages.mo`.
+
+---
+
+## Output Structure
+
+<FileTree>
+- build/
+    - messages.json Translation template
+    - locale/
+        - de/
+            - LC_MESSAGES/
+                - **messages.mo** Compiled translation
+                - **messages.po** Human-readable translation source
+</FileTree>
+
+---
+
+## Next Steps
+
+- <a href={`${base}guidance/how-to-generate-guidance/`}>How to Generate Guidance</a> — Use `-L LANG` to generate in your language
+
+<style>{`
+  .sl-markdown-content th {
+    background: var(--sl-color-accent-low);
+    font-weight: 600;
+  }
+  .sl-markdown-content td, .sl-markdown-content th {
+    padding: 0.6rem 1rem;
+  }
+  .sl-markdown-content td code {
+    background: var(--sl-color-bg-inline-code);
+    padding: 0.15em 0.35em;
+    font-size: 0.85em;
+  }
+`}</style>
