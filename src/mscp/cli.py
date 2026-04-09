@@ -8,7 +8,7 @@ from pathlib import Path
 
 # Local python modules
 from .admin_utils import build_all_baselines, add_new_rule
-from .common_utils import logger, set_logger, validate_yaml_file, supported_languages
+from .common_utils import logger, set_logger, validate_yaml_file, supported_languages, mscp_data
 from .generate import (
     generate_baseline,
     generate_guidance,
@@ -95,6 +95,14 @@ def parse_cli() -> None:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         parents=[parent_parser],
         add_help=False,
+    )
+
+    _v = mscp_data.get("mscp", {})
+    parser.add_argument(
+        "-V",
+        "--version",
+        action="version",
+        version=f"%(prog)s {_v.get('version', 'unknown')} (build {_v.get('build', '?')}, {_v.get('build_date', 'unknown')})",
     )
 
     parser.add_argument(
