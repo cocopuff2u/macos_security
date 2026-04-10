@@ -11,7 +11,7 @@ from jinja2 import Environment, FileSystemLoader
 
 # Local python modules
 from ...classes import Baseline, Macsecurityrule
-from ...common_utils import config, create_file, logger, make_dir
+from ...common_utils import config, create_file, logger, make_dir, mscp_data
 
 
 def group_ulify(elements: list[str]) -> str:
@@ -140,7 +140,8 @@ def generate_script(
         audit_name=audit_name,
         reference_log_id=log_reference,
         todays_date=date.today().strftime("%Y-%m-%d"),
-        mscp_version=current_version_data["compliance_version"],
+        mscp_release=current_version_data["compliance_version"],
+        mscp_version=mscp_data.get("mscp", {}),
     )
 
     generate_audit_plist(build_path, baseline_name, baseline)
@@ -182,7 +183,8 @@ def generate_restore_script(
         audit_name=audit_name,
         reference_log_id=log_reference,
         todays_date=date.today().strftime("%Y-%m-%d"),
-        mscp_version=current_version_data["compliance_version"],
+        mscp_release=current_version_data["compliance_version"],
+        mscp_version=mscp_data.get("mscp", {}),
     )
 
     if any_rendered:

@@ -32,6 +32,7 @@ from ..generate.guidance_support import (
     generate_profiles,
     generate_script,
     generate_restore_script,
+    generate_manifest,
 )
 
 
@@ -215,6 +216,12 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
             language=args.language,
         )
 
+    if args.manifest:
+        logger.info("Generating JSON manifest")
+        sp.text = "Generating JSON manifest"
+        time.sleep(1)
+        generate_manifest(build_path, baseline_name, baseline)
+
     if args.all:
         logger.info("Generating all support files")
         logger.info("Generating configuration profiles")
@@ -279,6 +286,12 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
             output_format="markdown",
             language=args.language,
         )
+
+        logger.info("Generating JSON manifest")
+        sp.text = "Generating JSON manifest"
+        time.sleep(1)
+        generate_manifest(build_path, baseline_name, baseline)
+
     logger.info("Generating asciidoctor, PDF, and HTML documents")
     generate_documents(
         sp,
@@ -295,5 +308,5 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
         language=args.language,
     )
 
-    sp.text = f"MSCP DOCUMENT GENERATION COMPLETE! All of the documents can be found in this folder: /{build_path}/"
+    sp.text = f"MSCP DOCUMENT GENERATION COMPLETE! All of the documents can be found in this folder: {build_path}/"
     sp.ok("✔")

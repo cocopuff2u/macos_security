@@ -1,4 +1,4 @@
-# mscp/generate/checklist.py
+# mscp/common_utils/version_data.py
 
 # Standard python modules
 from typing import Any
