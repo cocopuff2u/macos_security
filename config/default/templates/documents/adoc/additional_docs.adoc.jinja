@@ -7,8 +7,8 @@
 |===
 |{% trans %}Document Number or Descriptor{% endtrans %}
 |{% trans %}Document Title{% endtrans %}
-|link:https://nvd.nist.gov/800-53[NIST Special Publication 800-53 Rev 5]|_NIST Special Publication 800-53 Rev 5.1.1_
-|link:https://www.nist.gov/itl/tig/projects/special-publication-800-63[NIST Special Publication 800-63]|_NIST Special Publication 800-63_
+|link:https://nvd.nist.gov/800-53[NIST Special Publication 800-53 Rev 5]|_NIST Special Publication 800-53 Rev 5.2.0_
+|link:https://pages.nist.gov/800-63-4/[NIST SP 800-63 Digital Identity Guidelines]|_NIST Special Publication 800-63 Rev 4_
 |link:https://csrc.nist.gov/pubs/sp/800/171/r3/final[NIST Special Publication 800-171]|_NIST Special Publication 800-171 Rev 3_
 |link:https://csrc.nist.gov/pubs/sp/800/219/r1/final[NIST Special Publication 800-219]|_NIST Special Publication 800-219 Rev 1_
 |===
@@ -20,7 +20,9 @@
 |{% trans %}Document Number or Descriptor{% endtrans %}
 |{% trans %}Document Title{% endtrans %}
 {% if os_name == "macos" %}
-{% if os_version == "15.0" %}
+{% if os_version == "26.0" %}
+|link:https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_macOS_26_V1R1_STIG.zip[STIG Ver 1, Rel 1]|_Apple macOS 26 (Tahoe) STIG_
+{% elif os_version == "15.0" %}
 |link:https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_macOS_15_V1R1_STIG.zip[STIG Ver 1, Rel 1]|_Apple macOS 15 (Sequoia) STIG_
 {% elif os_version == "14.0" %}
 |link:https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_macOS_14_V1R1_STIG.zip[STIG Ver 1, Rel 1]|_Apple macOS 14 (Sonoma) STIG_
@@ -40,7 +42,9 @@
 |link:https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_iOS-iPadOS_16_BYOAD_Y23M08_STIG.zip[STIG Ver 1, Rel 1]|_Apple iOS/iPadOS 16 BYOAD STIG - Ver 1, Rel 1_
 {% endif %}
 {% elif os_name == "visionos" %}
-| | _Currently Unavailable_
+|link:https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_visionOS_2_Y25M09_STIG.zip[STIG Ver 1, Rel 1]|_Apple visionOS 2 STIG - Ver 1, Rel 1_
+{% elif os_name == "ubuntu" %}
+|link:https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_CAN_Ubuntu_22-04_LTS_V2R7_STIG.zip[STIG Ver 2, Rel 7]|_Canonical Ubuntu 22.04 LTS STIG - Ver 2, Rel 7_
 {% endif %}
 
 |===
@@ -64,6 +68,7 @@
 
 === {% trans %}Non-Government Documents{% endtrans %}
 
+{% if os_name in ["macos", "ios", "visionos"] %}
 [%header, cols=2*a]
 .Apple
 |===
@@ -74,6 +79,7 @@
 |link:https://support.apple.com/guide/certifications/welcome/web[Apple Platform Certifications]|_Apple Platform Certifications_
 |link:https://developer.apple.com/documentation/devicemanagement/profile-specific_payload_keys[Profile-Specific Payload Keys]|_Profile-Specific Payload Keys_
 |===
+{% endif %}
 
 [%header, cols=2*a]
 .Center for Internet Security
@@ -98,8 +104,8 @@
 {% elif os_version == "16.0" %}
 |link:https://www.cisecurity.org/benchmark/apple_ios[Apple iOS/iPadOS]|_CIS Apple iOS 16 and iPadOS 16 Version 1.1.0_
 {% endif %}
-{% elif os_name == "visionos" %}
-| | _Currently Unavailable_
+{% elif os_name == "ubuntu" %}
+|link:https://www.cisecurity.org/benchmark/ubuntu_linux[Ubuntu Linux]|_CIS Ubuntu Linux 24.04 LTS Benchmark v1.0.0_
 {% endif %}
 
 |===

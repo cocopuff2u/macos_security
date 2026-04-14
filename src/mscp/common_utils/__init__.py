@@ -1,7 +1,7 @@
 # common_utils/__init__.py
 
 from .config import config
-from .constants import SCHEMA_PATH
+from .constants import SCHEMA_PATH, APPLE_OS, NIX_OS
 from .customization import collect_overrides
 from .file_handling import (
     append_text,
@@ -58,6 +58,8 @@ __all__ = [
     "config",
     "CONFIG_PATH",
     "SCHEMA_PATH",
+    "APPLE_OS",
+    "NIX_OS",
     "validate_yaml_file",
     "logger",
     "supported_languages",

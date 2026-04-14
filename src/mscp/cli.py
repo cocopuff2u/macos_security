@@ -8,7 +8,13 @@ from pathlib import Path
 
 # Local python modules
 from .admin_utils import build_all_baselines, add_new_rule
-from .common_utils import logger, set_logger, validate_yaml_file, supported_languages, mscp_data
+from .common_utils import (
+    logger,
+    set_logger,
+    validate_yaml_file,
+    supported_languages,
+    mscp_data,
+)
 from .generate import (
     generate_baseline,
     generate_guidance,

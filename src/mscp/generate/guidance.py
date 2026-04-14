@@ -72,9 +72,6 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
     logger.debug(f"Language parameter from CLI: {args.language}")
 
     sp.spinner = Spinners.dots
-    logo_path: Path = Path(
-        config["defaults"]["images_dir"], "mscp_banner.png"
-    ).absolute()
     signing: bool = False
     log_reference: str = "default"
     if args.dark:
@@ -108,6 +105,15 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
 
     if args.logo:
         logo_path = args.logo
+    else:
+        logo_path = Path(
+            config["defaults"]["images_dir"],
+            f"mscp_banner-{baseline.platform['os']}.png",
+        ).absolute()
+
+    if not logo_path.exists():
+        logger.warning(f"Logo not found at {logo_path}, using default instead.")
+        logo_path = Path(config["defaults"]["images_dir"], "mscp_banner.png").absolute()
 
     if args.hash:
         if sys.platform.startswith("darwin"):
@@ -166,9 +172,9 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
         time.sleep(1)
         generate_ddm(build_path, baseline, baseline_name)
 
-    if args.script and baseline.platform["os"].lower() == "macos":
-        logger.info("Generating compliance script")
-        sp.text = "Generating compliance script"
+    if args.script:
+        logger.info("Generating compliance scripts")
+        sp.text = "Generating compliance scripts"
         time.sleep(1)
         generate_script(
             build_path,
@@ -242,26 +248,25 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
         time.sleep(1)
         generate_ddm(build_path, baseline, baseline_name)
 
-        if baseline.platform["os"].lower() == "macos":
-            logger.info("Generating compliance script")
-            sp.text = "Generating compliance script"
-            time.sleep(1)
-            generate_script(
-                build_path,
-                baseline_name,
-                audit_name,
-                baseline,
-                log_reference,
-                current_version_data,
-            )
-            generate_restore_script(
-                build_path,
-                baseline_name,
-                audit_name,
-                baseline,
-                log_reference,
-                current_version_data,
-            )
+        logger.info("Generating compliance scripts")
+        sp.text = "Generating compliance scripts"
+        time.sleep(1)
+        generate_script(
+            build_path,
+            baseline_name,
+            audit_name,
+            baseline,
+            log_reference,
+            current_version_data,
+        )
+        generate_restore_script(
+            build_path,
+            baseline_name,
+            audit_name,
+            baseline,
+            log_reference,
+            current_version_data,
+        )
 
         logger.info("Generating Excel document")
         sp.text = "Generating Excel document"
