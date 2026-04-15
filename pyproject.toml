@@ -8,27 +8,40 @@ dynamic = ["version"]
 description = 'The macOS Security Compliance Project is an open source effort to provide a programmatic approach to generating security guidance.'
 readme = "README.md"
 requires-python = ">=3.12"
-license-files  = ["LICEN[CS]E*"]
-keywords = []
+license = {text = "CC-BY-4.0"}
+license-files = ["LICEN[CS]E*"]
+authors = []
+keywords = ["macos", "security", "compliance", "nist", "scap", "baseline", "stig", "cis"]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Operating System :: MacOS :: MacOS X",
+  "Operating System :: POSIX :: Linux",
+  "Intended Audience :: System Administrators",
+  "Topic :: Security",
+  "Topic :: System Administration",
 ]
 dependencies = [
-  "jinja2==3.1.5",
-  "loguru==0.7.3",
-  "lxml==5.4.0",
-  "openpyxl==3.1.5",
-  "numpy==2.2.5",
-  "pandas==2.2.3",
-  "pydantic==2.12",
-  "pyyaml==6.0.2",
-  "jsonschema==4.23.0",
-  "yaspin==3.4.0",
-  "babel==2.18.0",
+  "jinja2>=3.1.5,<4",
+  "loguru>=0.7.3,<1",
+  "lxml>=5.4.0,<6",
+  "openpyxl>=3.1.5,<4",
+  "numpy>=2.2.5,<3",
+  "pandas>=2.2.3,<3",
+  "pydantic>=2.12,<3",
+  "pyyaml>=6.0.2,<7",
+  "jsonschema>=4.23.0,<5",
+  "yaspin>=3.4.0,<4",
+  "babel>=2.18.0,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "pytest-cov",
+  "ruff",
+  "mypy",
 ]
 
 [project.urls]

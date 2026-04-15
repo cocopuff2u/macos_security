@@ -11,7 +11,7 @@ from jinja2 import Environment, FileSystemLoader
 
 # Local python modules
 from ...classes import Baseline, Macsecurityrule
-from ...common_utils import config, create_file, logger, make_dir, mscp_data
+from ...common_utils import config, create_file, logger, make_dir, mscp_data, NIX_OS
 
 
 def group_ulify(elements: list[str]) -> str:
@@ -51,13 +51,11 @@ def generate_log_reference(rule: Macsecurityrule, reference: str) -> list[str] |
     Note:
         This is used as a Jinja filter in the script template.
     """
-    cis_ref = ["cis", "cis_lvl1", "cis_lvl2", "cisv8"]
-
     log_reference_id: list[str] | str
     try:
         log_references = rule["references"].get_ref(reference)
     except KeyError:
-        logger.error(
+        logger.warning(
             f'Unable to find the reference "{reference}" in rule "{rule["rule_id"]}"'
         )
         log_references = []
@@ -120,6 +118,12 @@ def generate_script(
     log_reference: str,
     current_version_data: dict,
 ) -> None:
+    if not baseline.platform["os"].lower() in NIX_OS:
+        logger.warning(
+            f"Platform {baseline.platform['os']} does not support shell scripts, skipping generation."
+        )
+        return
+
     output_file: Path = Path(build_path, f"{baseline_name}_compliance.sh")
     env: Environment = Environment(
         loader=FileSystemLoader(config["defaults"]["shell_template_dir"]),
@@ -157,6 +161,12 @@ def generate_restore_script(
     log_reference: str,
     current_version_data: dict,
 ) -> None:
+    if not baseline.platform["os"].lower() in NIX_OS:
+        logger.warning(
+            f"Platform {baseline.platform['os']} does not support shell scripts, skipping generation."
+        )
+        return
+
     output_file: Path = Path(build_path, f"{baseline_name}_restore.sh")
     env: Environment = Environment(
         loader=FileSystemLoader(config["defaults"]["shell_template_dir"]),

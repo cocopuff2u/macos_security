@@ -7,7 +7,7 @@ from typing import Any, Dict, List
 
 # Local python modules
 from ...classes import Baseline, Macsecurityrule, Payload
-from ...common_utils import logger, make_dir, run_command
+from ...common_utils import logger, make_dir, run_command, APPLE_OS
 
 
 def get_payload_content_by_type(
@@ -104,6 +104,11 @@ def generate_profiles(
         - Optionally signs the profiles if signing is enabled.
         - Displays a caution message about the use of the generated profiles in a test environment.
     """
+    if not baseline.platform["os"].lower() in APPLE_OS:
+        logger.warning(
+            f"Platform {baseline.platform['os']} does not support configuration profiles, skipping generation."
+        )
+        return
 
     def merge_flat_settings(flat_settings: List[Dict[str, Any]]) -> Dict[str, Any]:
         agg: defaultdict[str, List[Any]] = defaultdict(list)

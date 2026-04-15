@@ -12,13 +12,18 @@ from typing import Any, Sequence, Dict, List
 
 # Additional python modules
 from jinja2 import Environment, FileSystemLoader, Template
-from yaspin import inject_spinner
 from yaspin.core import Yaspin
 from yaspin.spinners import Spinners
 
 # Local python modules
 from ...classes import Baseline, Macsecurityrule
-from ...common_utils import config, logger, open_file, run_command
+from ...common_utils import (
+    config,
+    logger,
+    open_file,
+    run_command,
+    NIX_OS,
+)
 
 
 def group_ulify(elements: list[str]) -> str:
@@ -434,6 +439,7 @@ def render_template(
         format=output_format,
         acronyms=acronyms_data.get("acronyms", []),
         terminology=acronyms_data.get("terminology", []),
+        NIX_OS=NIX_OS,
     )
 
     output_file.write_text(rendered_output)

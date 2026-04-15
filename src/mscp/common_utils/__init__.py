@@ -1,7 +1,7 @@
 # common_utils/__init__.py
 
 from .config import config
-from .constants import SCHEMA_PATH
+from .constants import SCHEMA_PATH, APPLE_OS, NIX_OS
 from .customization import collect_overrides
 from .file_handling import (
     append_text,
@@ -28,8 +28,9 @@ from .mscp_data import get_mscp_data, mscp_data
 from .run_command import run_command
 from .sanitize_input import sanitize_input
 from .prompt_for_odv import prompt_for_odv
-from .validate_rules import validate_yaml_file
+from .validate_rules import validate_yaml_file, validate_rule_folder_structure
 from .version_data import get_version_data
+from .spinner_utils import conditional_inject_spinner
 
 __all__ = [
     "append_text",
@@ -58,8 +59,12 @@ __all__ = [
     "config",
     "CONFIG_PATH",
     "SCHEMA_PATH",
+    "APPLE_OS",
+    "NIX_OS",
     "validate_yaml_file",
     "logger",
     "supported_languages",
     "collect_overrides",
+    "validate_rule_folder_structure",
+    "conditional_inject_spinner",
 ]

@@ -10,7 +10,14 @@ from typing import Any
 
 # Local python modules
 from ...classes import Baseline, Macsecurityrule
-from ...common_utils import append_text, logger, make_dir, mscp_data, remove_dir
+from ...common_utils import (
+    append_text,
+    logger,
+    make_dir,
+    mscp_data,
+    remove_dir,
+    APPLE_OS,
+)
 
 
 def generate_ddm_activation(output_path: Path, identifier: str) -> None:
@@ -104,6 +111,11 @@ def generate_ddm(build_path: Path, baseline: Baseline, baseline_name: str) -> No
             baseline_name="example_baseline"
         )
     """
+    if not baseline.platform["os"].lower() in APPLE_OS:
+        logger.warning(
+            f"Platform {baseline.platform['os']} does not support DDM, skipping generation."
+        )
+        return
 
     ddm_output_path: Path = Path(build_path, "declarative")
     activations_output_path: Path = Path(ddm_output_path, "activations")

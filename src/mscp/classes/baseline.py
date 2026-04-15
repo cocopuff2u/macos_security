@@ -102,7 +102,6 @@ class Baseline(BaseModelWithAccessors):
 
         baseline_data: dict[str, Any] = open_file(file_path, language)
         authors = [Author(**author) for author in baseline_data.get("authors", [])]
-        baseline_tag = file_path.stem.replace("_test", "")
 
         platform: dict[str, Any] = baseline_data["platform"]
 

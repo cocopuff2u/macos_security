@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 # Additional python modules
-from yaspin import inject_spinner
+from ..common_utils import conditional_inject_spinner
 from yaspin.core import Yaspin
 from yaspin.spinners import Spinners
 
@@ -66,23 +66,20 @@ def verify_signing_hash(cert_hash: str) -> bool:
     return True
 
 
-@inject_spinner()
+@conditional_inject_spinner()
 def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
     # Configure localization at the beginning based on the CLI language parameter
     logger.debug(f"Language parameter from CLI: {args.language}")
 
     sp.spinner = Spinners.dots
-    logo_path: Path = Path(
-        config["defaults"]["images_dir"], "mscp_banner.png"
-    ).absolute()
     signing: bool = False
     log_reference: str = "default"
     if args.dark:
-        pdf_theme: str = f"mscp_theme-dark.yml"
-        html_css: str = f"asciidoctor-dark.css"
+        pdf_theme: str = "mscp_theme-dark.yml"
+        html_css: str = "asciidoctor-dark.css"
     else:
-        pdf_theme: str = f"mscp_theme.yml"
-        html_css: str = f"asciidoctor.css"
+        pdf_theme: str = "mscp_theme.yml"
+        html_css: str = "asciidoctor.css"
 
     custom: bool = not any(Path(config["custom"]["root_dir"]).iterdir())
     show_all_tags: bool = False
@@ -90,7 +87,12 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
     output_basename: str = args.baseline.name
     baseline_name: str = args.baseline.stem
     audit_name: str = str(baseline_name)
-    build_path: Path = Path(config.get("output_dir", ""), baseline_name)
+    if not args.language == "en":
+        build_path: Path = Path(
+            config.get("output_dir", ""), f"{baseline_name}_{args.language}"
+        )
+    else:
+        build_path: Path = Path(config.get("output_dir", ""), baseline_name)
     adoc_output_file: Path = Path(build_path, f"{baseline_name}_{args.language}.adoc")
     md_output_file: Path = Path(build_path, f"{baseline_name}_{args.language}.md")
     spreadsheet_output_file: Path = Path(
@@ -108,6 +110,15 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
 
     if args.logo:
         logo_path = args.logo
+    else:
+        logo_path = Path(
+            config["defaults"]["images_dir"],
+            f"mscp_banner-{baseline.platform['os']}.png",
+        ).absolute()
+
+    if not logo_path.exists():
+        logger.warning(f"Logo not found at {logo_path}, using default instead.")
+        logo_path = Path(config["defaults"]["images_dir"], "mscp_banner.png").absolute()
 
     if args.hash:
         if sys.platform.startswith("darwin"):
@@ -121,7 +132,6 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
             logger.error(
                 "Signing of configuration profiles is only supported when run natively on macOS, ignoring..."
             )
-
     if args.reference:
         log_reference = args.reference
 
@@ -166,9 +176,9 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
         time.sleep(1)
         generate_ddm(build_path, baseline, baseline_name)
 
-    if args.script and baseline.platform["os"].lower() == "macos":
-        logger.info("Generating compliance script")
-        sp.text = "Generating compliance script"
+    if args.script:
+        logger.info("Generating compliance scripts")
+        sp.text = "Generating compliance scripts"
         time.sleep(1)
         generate_script(
             build_path,
@@ -242,26 +252,25 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
         time.sleep(1)
         generate_ddm(build_path, baseline, baseline_name)
 
-        if baseline.platform["os"].lower() == "macos":
-            logger.info("Generating compliance script")
-            sp.text = "Generating compliance script"
-            time.sleep(1)
-            generate_script(
-                build_path,
-                baseline_name,
-                audit_name,
-                baseline,
-                log_reference,
-                current_version_data,
-            )
-            generate_restore_script(
-                build_path,
-                baseline_name,
-                audit_name,
-                baseline,
-                log_reference,
-                current_version_data,
-            )
+        logger.info("Generating compliance scripts")
+        sp.text = "Generating compliance scripts"
+        time.sleep(1)
+        generate_script(
+            build_path,
+            baseline_name,
+            audit_name,
+            baseline,
+            log_reference,
+            current_version_data,
+        )
+        generate_restore_script(
+            build_path,
+            baseline_name,
+            audit_name,
+            baseline,
+            log_reference,
+            current_version_data,
+        )
 
         logger.info("Generating Excel document")
         sp.text = "Generating Excel document"

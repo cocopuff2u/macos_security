@@ -294,7 +294,6 @@ def create_file(file_path: Path, data: Any, append: bool = False) -> None:
         IOError: If an I/O error occurs during file operations.
         Exception: For any other unexpected errors.
     """
-
     match file_path.suffix:
         case ".yaml" | ".yml":
             create_yaml(file_path, data, append)
@@ -378,7 +377,6 @@ def create_plist(file_path: Path, data: dict[str, Any], append: bool = False) ->
         with file_path.open("rb") as file:
             existing_settings_dict = plistlib.load(file)
             data.update(existing_settings_dict)
-
     try:
         with file_path.open("wb") as file:
             plistlib.dump(data, file)

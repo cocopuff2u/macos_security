@@ -10,8 +10,9 @@ from pathlib import Path
 import loguru
 
 # Local python modules
-# from ..classes.loguruformatter import LoguruFormatter
 from .logger_instance import logger
+
+verbose_logging: bool = False
 
 
 def function_filter(record):
@@ -25,7 +26,9 @@ def function_filter(record):
 
 
 def set_logger(debug: bool = False, verbosity: int = 0) -> loguru.Logger:
-    log_level: str = "CRITICAL"
+    global verbose_logging
+    verbose_logging = verbosity > 0 or debug
+    log_level: str = "ERROR"
 
     if verbosity == 1:
         log_level = "WARNING"
@@ -46,11 +49,12 @@ def set_logger(debug: bool = False, verbosity: int = 0) -> loguru.Logger:
             },
             {
                 "sink": Path("logs", "mscp.log"),
-                "level": log_level,
+                "level": "DEBUG",
                 "encoding": "utf-8",
                 "enqueue": True,
                 "serialize": True,
                 "rotation": "1 hour",
+                "retention": 5,
             },
         ]
     )

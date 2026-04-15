@@ -2,18 +2,12 @@
 
 # Standard python modules
 import argparse
-import sys
-from collections import defaultdict
 from pathlib import Path
-from typing import Any
 
 # Local python modules
 from ..common_utils import (
     config,
     logger,
-    make_dir,
-    mscp_data,
-    open_file,
     sanitize_input,
 )
 from ..classes import Macsecurityrule
@@ -25,9 +19,6 @@ def add_new_rule(args: argparse.Namespace) -> None:
 
     build_path: Path = Path(config["custom"].get("rules_dir", ""))
 
-    all_rules: list[Macsecurityrule] = Macsecurityrule.collect_all_rules(
-        args.os_name, args.os_version, tailoring=False, parent_values="Default"
-    )
     rule_title: str = sanitize_input("Enter a title for the new rule: ")
     rule_id: str = sanitize_input("Enter a unique ID for the new rule: ")
 
