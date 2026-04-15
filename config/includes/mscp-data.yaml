@@ -71,13 +71,6 @@ authors:
 
 versions:
   platforms:
-    ubuntu:
-      - os_version: 24.04
-        os_name: "Ubuntu"
-        compliance_version: "Ubuntu Guidance, Revision X.X"
-        revision: 1.0
-        cpe: o:linux:ubuntu:24.04
-        date: "2026-02-26"
     macos:
       - os_version: 26.0
         os_name: "tahoe"
