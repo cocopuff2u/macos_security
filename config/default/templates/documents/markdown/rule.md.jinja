@@ -12,13 +12,13 @@
 {% endif %}
 
 {%- if rule.mechanism == "manual" %}
-> **NOTE**: This rule is marked as manual and may not be able to be automated. It is also excluded in the compliance scan and will not report any results.
+> **NOTE**: {% trans %} This rule is marked as manual and may not be able to be automated. It is also excluded in the compliance scan and will not report any results. {% endtrans %}
 {% endif -%}
 
 {% if not rule.tags | select('in', check_tags) | list %}
 {% if rule.tags is not defined or rule.tags is none or "supplemental" not in rule.tags %}
 {% if rule.os_type.lower() in NIX_OS %}
-To check the state of the system, run the following command(s):
+{% trans %}To check the state of the system, run the following command(s){% endtrans %}:
 
 ```bash
 {% if check_shell is not none %}
@@ -32,21 +32,21 @@ To check the state of the system, run the following command(s):
 {% endif %}
 
 {% if rule.os_type.lower() in NIX_OS %}
-If the result is not _{{ rule.result_value }}_, this is a finding.
+{% trans %}If the result is not{% endtrans %} _{{ rule.result_value }}_, {% trans %}this is a finding{% endtrans %}.
 {% endif %}
 
 <table class="remediation">
 <tr>
 <td>
 <p>
-<strong>Remediation Description</strong><br /><br />
+<strong>{% trans %}Remediation Description{% endtrans %}</strong><br /><br />
 
 {% if rule.fix is not none %}
-Perform the following to configure the system to meet the requirements:<br />
+{% trans %}Perform the following to configure the system to meet the requirements{% endtrans %}:<br />
 {% endif %}
 
 {% if rule.mobileconfig_info is none and rule.fix is not none or fix_shell %}
-To check the state of the system, run the following command(s):
+{% trans %}Run the following command(s){% endtrans %}:
 
 ```bash
 {{ rule.fix | asciidoc_to_markdown if rule.fix is not none else fix_shell }}
@@ -70,6 +70,8 @@ To check the state of the system, run the following command(s):
 {% if rule.os_name == "macos" %}
 {{ rule.fix | asciidoc_to_markdown }}
 {% else %}
+{% trans %}Deploy a configuration profile containing the following payload.{% endtrans %}
+
 ```xml
 {{ rule.mobileconfig_info | mobileconfig_payloads_to_xml -}}
 ```
@@ -92,7 +94,7 @@ To check the state of the system, run the following command(s):
     {% endif %}
   </tr>
   <tr>
-    <td>References</td>
+    <td>{% trans %}References{% endtrans %}</td>
     <td>
       <table class="nested-table">
         <tr>

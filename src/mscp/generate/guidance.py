@@ -87,7 +87,12 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
     output_basename: str = args.baseline.name
     baseline_name: str = args.baseline.stem
     audit_name: str = str(baseline_name)
-    build_path: Path = Path(config.get("output_dir", ""), baseline_name)
+    if not args.language == "en":
+        build_path: Path = Path(
+            config.get("output_dir", ""), f"{baseline_name}_{args.language}"
+        )
+    else:
+        build_path: Path = Path(config.get("output_dir", ""), baseline_name)
     adoc_output_file: Path = Path(build_path, f"{baseline_name}_{args.language}.adoc")
     md_output_file: Path = Path(build_path, f"{baseline_name}_{args.language}.md")
     spreadsheet_output_file: Path = Path(
