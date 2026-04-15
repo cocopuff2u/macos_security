@@ -10,9 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = {text = "CC-BY-4.0"}
 license-files = ["LICEN[CS]E*"]
-authors = [
-  {name = "Dan Brodjieski", email = "brodjieski@gmail.com"},
-]
+authors = []
 keywords = ["macos", "security", "compliance", "nist", "scap", "baseline", "stig", "cis"]
 classifiers = [
   "Development Status :: 4 - Beta",
