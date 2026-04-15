@@ -30,6 +30,7 @@ from .sanitize_input import sanitize_input
 from .prompt_for_odv import prompt_for_odv
 from .validate_rules import validate_yaml_file, validate_rule_folder_structure
 from .version_data import get_version_data
+from .spinner_utils import conditional_inject_spinner
 
 __all__ = [
     "append_text",
@@ -65,4 +66,5 @@ __all__ = [
     "supported_languages",
     "collect_overrides",
     "validate_rule_folder_structure",
+    "conditional_inject_spinner",
 ]

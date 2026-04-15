@@ -12,13 +12,18 @@ from typing import Any, Sequence, Dict, List
 
 # Additional python modules
 from jinja2 import Environment, FileSystemLoader, Template
-from yaspin import inject_spinner
 from yaspin.core import Yaspin
 from yaspin.spinners import Spinners
 
 # Local python modules
 from ...classes import Baseline, Macsecurityrule
-from ...common_utils import config, logger, open_file, run_command, NIX_OS
+from ...common_utils import (
+    config,
+    logger,
+    open_file,
+    run_command,
+    NIX_OS,
+)
 
 
 def group_ulify(elements: list[str]) -> str:

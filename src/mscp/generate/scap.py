@@ -12,7 +12,7 @@ from xml.dom import minidom
 
 
 # Additional python modules
-from yaspin import inject_spinner
+from ..common_utils import conditional_inject_spinner
 from yaspin.core import Yaspin
 from yaspin.spinners import Spinners
 
@@ -36,24 +36,26 @@ def pretty_format_xml(xml_string: str) -> str:
         [line for line in pretty_xml_as_string.split("\n") if line.strip()]
     )
 
+
 def disa_stig_rules(stig_id, stig):
     newtitle = str()
     regex = r"<title>(SRG.*\d)<\/title>.*.{}".format(stig_id)
-    matches = re.search(regex,stig)
-    #SRG
-    if matches:   
+    matches = re.search(regex, stig)
+    # SRG
+    if matches:
         newtitle = str(matches.group(1))
 
     regex = r"Rule id=\"(.*\S)\" we.*.{}".format(stig_id)
-    matches = re.search(regex,stig)
-    #RuleID
+    matches = re.search(regex, stig)
+    # RuleID
     if matches:
         newtitle = newtitle + ", " + str(matches.group(1).split("_")[0])
-            
-    # srg-123-456. SV-7891234
-    return newtitle	
 
-@inject_spinner()
+    # srg-123-456. SV-7891234
+    return newtitle
+
+
+@conditional_inject_spinner()
 def generate_scap(sp: Yaspin, args: argparse.Namespace) -> None:
     sp.spinner = Spinners.dots
     sp.text = "Collecting rule files"
@@ -260,36 +262,38 @@ def generate_scap(sp: Yaspin, args: argparse.Namespace) -> None:
         selected_os_benchmark = []
         for benchmark, v in benchmark_map.items():
             if list(v)[0].lower() == args.os_name.lower():
-                if args.baseline != "all_rules":                    
+                if args.baseline != "all_rules":
                     if benchmark == args.baseline:
-                        selected_os_benchmark.append(benchmark)                        
+                        selected_os_benchmark.append(benchmark)
                 else:
-                    selected_os_benchmark.append(benchmark)             
+                    selected_os_benchmark.append(benchmark)
         if args.disa_stig and args.oval and args.baseline == "disa_stig":
             file = open(args.disa_stig, "r")
-            stig = file.read()            
-            rule.title = disa_stig_rules(rule.references.get_ref("disa_stig")[0], stig)   
+            stig = file.read()
+            rule.title = disa_stig_rules(rule.references.get_ref("disa_stig")[0], stig)
         if rule.odv is not None:
             if args.baseline == "all_rules":
                 selected_os_benchmark.append("recommended")
-                            
-            for k, _ in rule.odv.items():                
+
+            for k, _ in rule.odv.items():
                 newrule = rule.model_copy(deep=True)
                 if k == "hint":
                     continue
                 check_existence = ""
                 check_value = ""
-                count_found = False                             
-                if k in selected_os_benchmark:                    
+                count_found = False
+                if k in selected_os_benchmark:
                     check_content = str()
                     if args.xccdf is None and args.oval is None:
                         check_content = """<check system="http://oval.mitre.org/XMLSchema/oval-definitions-5"><check-content-ref href="oval.xml" name="oval:mscp:def:{}"/></check>""".format(
                             oval_counter
                         )
-                    
-                    newrule._fill_in_odv(k)                    
+
+                    newrule._fill_in_odv(k)
                     fix_value = "none" if newrule.fix is None else escape(newrule.fix)
-                    check_value = "none" if newrule.check is None else escape(newrule.check)
+                    check_value = (
+                        "none" if newrule.check is None else escape(newrule.check)
+                    )
                     count_found = False
                     check_existence = "all_exist"
                     if " 2> /dev/null" in check_value:
@@ -353,7 +357,7 @@ def generate_scap(sp: Yaspin, args: argparse.Namespace) -> None:
                             check_value,
                             newrule.result_value,
                             xccdf_references,
-                            rule.references.get_ref("cce")[0],                            
+                            rule.references.get_ref("cce")[0],
                             fix_value,
                             check_content,
                         )
@@ -699,6 +703,5 @@ def generate_scap(sp: Yaspin, args: argparse.Namespace) -> None:
         rite.write(totaloutput)
         rite.close()
 
-    sp.text = f"DONE!"
+    sp.text = f"Generated new SCAP file: {output_file}"
     sp.ok("✔")
-    print(f"Generated new SCAP file: {output_file}")

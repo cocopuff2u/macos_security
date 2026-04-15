@@ -10,8 +10,9 @@ from pathlib import Path
 import loguru
 
 # Local python modules
-# from ..classes.loguruformatter import LoguruFormatter
 from .logger_instance import logger
+
+verbose_logging: bool = False
 
 
 def function_filter(record):
@@ -25,6 +26,8 @@ def function_filter(record):
 
 
 def set_logger(debug: bool = False, verbosity: int = 0) -> loguru.Logger:
+    global verbose_logging
+    verbose_logging = verbosity > 0 or debug
     log_level: str = "ERROR"
 
     if verbosity == 1:

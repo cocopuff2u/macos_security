@@ -13,7 +13,7 @@ from ..common_utils import config, make_dir, open_file
 from ..common_utils.logger_instance import logger
 
 # Additional python modules
-from yaspin import inject_spinner
+from ..common_utils import conditional_inject_spinner
 from yaspin.core import Yaspin
 from yaspin.spinners import Spinners
 
@@ -35,7 +35,7 @@ def update_rule_with_custom_references(
     logger.info(f"Updated rule {rule.rule_id} with references: {references}")
 
 
-@inject_spinner()
+@conditional_inject_spinner()
 def generate_mapping(sp: Yaspin, args: argparse.Namespace) -> None:
     sp.spinner = Spinners.dots
     sp.text = "Collecting rule files"

@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 # Additional python modules
-from yaspin import inject_spinner
+from ..common_utils import conditional_inject_spinner
 from yaspin.core import Yaspin
 from yaspin.spinners import Spinners
 
@@ -66,7 +66,7 @@ def verify_signing_hash(cert_hash: str) -> bool:
     return True
 
 
-@inject_spinner()
+@conditional_inject_spinner()
 def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
     # Configure localization at the beginning based on the CLI language parameter
     logger.debug(f"Language parameter from CLI: {args.language}")
