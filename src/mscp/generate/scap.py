@@ -697,7 +697,7 @@ def generate_scap(sp: Yaspin, args: argparse.Namespace) -> None:
 
     output_file = output_file / base_filename
 
-    sp.text = f"Writing output files"
+    sp.text = "Writing output files"
     time.sleep(1)
     with open(output_file, "w") as rite:
         rite.write(totaloutput)

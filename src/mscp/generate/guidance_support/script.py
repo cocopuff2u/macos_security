@@ -51,8 +51,6 @@ def generate_log_reference(rule: Macsecurityrule, reference: str) -> list[str] |
     Note:
         This is used as a Jinja filter in the script template.
     """
-    cis_ref = ["cis", "cis_lvl1", "cis_lvl2", "cisv8"]
-
     log_reference_id: list[str] | str
     try:
         log_references = rule["references"].get_ref(reference)

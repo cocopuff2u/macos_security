@@ -137,7 +137,7 @@ def generate_mapping(sp: Yaspin, args: argparse.Namespace) -> None:
             baseline_dict={},
         )
 
-        sp.text = f"DONE!"
+        sp.text = "DONE!"
         sp.ok("✔")
 
         print(f"Generated new baseline file: {baseline_file_path}")

@@ -75,11 +75,11 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
     signing: bool = False
     log_reference: str = "default"
     if args.dark:
-        pdf_theme: str = f"mscp_theme-dark.yml"
-        html_css: str = f"asciidoctor-dark.css"
+        pdf_theme: str = "mscp_theme-dark.yml"
+        html_css: str = "asciidoctor-dark.css"
     else:
-        pdf_theme: str = f"mscp_theme.yml"
-        html_css: str = f"asciidoctor.css"
+        pdf_theme: str = "mscp_theme.yml"
+        html_css: str = "asciidoctor.css"
 
     custom: bool = not any(Path(config["custom"]["root_dir"]).iterdir())
     show_all_tags: bool = False

@@ -3,12 +3,13 @@
 # Standard python modules
 import datetime
 from pathlib import Path
+from typing import Any
 
 
 # Additional python modules
 
 # Local python modules
-from ...common_utils import get_version_data, logger, mscp_data, create_json
+from ...common_utils import get_version_data, mscp_data, create_json
 
 
 def generate_manifest(build_path, baseline_name, baseline) -> None:
@@ -44,7 +45,7 @@ def generate_manifest(build_path, baseline_name, baseline) -> None:
             rule_manifest["title"] = rule.title
             rule_manifest["discussion"] = rule.discussion
             ref_parts = []
-            for org, refs in rule.references:
+            for _org, refs in rule.references:
                 if refs:
                     for item in refs:
                         try:
@@ -56,8 +57,8 @@ def generate_manifest(build_path, baseline_name, baseline) -> None:
                                 if k == "controls_v8":
                                     k = "cis_controls_v8"
                                 ref_parts.append(f"{k}|{vals}")
-                        except ValueError as e:
-                            continue
+                        except ValueError:
+                            raise
             rule_manifest["references"] = ";".join(str(x) for x in ref_parts)
             rule_manifest["tags"] = ",".join(str(x) for x in rule.tags)
             if rule.check:

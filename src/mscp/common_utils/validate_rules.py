@@ -71,11 +71,6 @@ def validate_rule_folder_structure(path_str: str) -> Path:
     """
     ALLOWED_EXTS = {".yaml", ".yml"}
 
-    section_dirs: list[Path] = [
-        Path(config["custom"]["sections_dir"]),
-        Path(config["defaults"]["sections_dir"]),
-    ]
-
     from ..classes.macsecurityrule import Sectionmap
 
     p = Path(path_str).expanduser().resolve()
