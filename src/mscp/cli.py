@@ -14,6 +14,8 @@ from .common_utils import (
     validate_yaml_file,
     supported_languages,
     mscp_data,
+    config,
+    validate_rule_folder_structure,
 )
 from .generate import (
     generate_baseline,
@@ -113,7 +115,7 @@ def parse_cli() -> None:
 
     parser.add_argument(
         "--os_name",
-        choices=["macos", "ios", "visionos"],
+        choices=["macos", "ios", "visionos", "ubuntu"],
         default="macos",
         help="operating system to be referenced when generating guidance",
         type=str,
@@ -124,6 +126,14 @@ def parse_cli() -> None:
         default=get_macos_version(),
         type=float,
         help="version of the operating system to be referenced when generating guidance (eg: 14.0, 15.0).",
+    )
+
+    parser.add_argument(
+        "-R",
+        "--rules_dir",
+        default=config["defaults"]["rules_dir"],
+        type=validate_rule_folder_structure,
+        help="Path to directory containing the library of rule files.",
     )
 
     # Sub Parsers for individual commands
@@ -551,6 +561,9 @@ compliance script (e.g. disa_stig, cis.benchmark)
             "macOS 13 and below is not supported, please use mSCP version 1.0."
         )
         sys.exit()
+
+    if not args.rules_dir == config["defaults"]["rules_dir"]:
+        config["defaults"]["rules_dir"] = args.rules_dir
 
     if args.subcommand == "guidance":
         if args.os_name != "macos" and args.script:

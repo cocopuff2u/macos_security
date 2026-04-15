@@ -127,7 +127,6 @@ def generate_guidance(sp: Yaspin, args: argparse.Namespace) -> None:
             logger.error(
                 "Signing of configuration profiles is only supported when run natively on macOS, ignoring..."
             )
-
     if args.reference:
         log_reference = args.reference
 

@@ -57,7 +57,7 @@ def generate_log_reference(rule: Macsecurityrule, reference: str) -> list[str] |
     try:
         log_references = rule["references"].get_ref(reference)
     except KeyError:
-        logger.error(
+        logger.warning(
             f'Unable to find the reference "{reference}" in rule "{rule["rule_id"]}"'
         )
         log_references = []

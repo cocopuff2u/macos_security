@@ -25,7 +25,7 @@ def function_filter(record):
 
 
 def set_logger(debug: bool = False, verbosity: int = 0) -> loguru.Logger:
-    log_level: str = "CRITICAL"
+    log_level: str = "ERROR"
 
     if verbosity == 1:
         log_level = "WARNING"
@@ -46,11 +46,12 @@ def set_logger(debug: bool = False, verbosity: int = 0) -> loguru.Logger:
             },
             {
                 "sink": Path("logs", "mscp.log"),
-                "level": log_level,
+                "level": "DEBUG",
                 "encoding": "utf-8",
                 "enqueue": True,
                 "serialize": True,
                 "rotation": "1 hour",
+                "retention": 5,
             },
         ]
     )
