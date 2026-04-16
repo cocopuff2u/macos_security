@@ -8,6 +8,7 @@ on:
 jobs:
   build_baselines_and_increment_build:
     # Skip if this is the action's own bump commit
+    if: "github.repository == 'usnistgov/macos_security' && !contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
 
     permissions:
