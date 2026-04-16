@@ -115,8 +115,11 @@ def rule_has_benchmark_for_version(
 
 
 @logger.catch
-def generate_baseline(args: argparse.Namespace) -> None:
-    build_path: Path = Path(config["custom"].get("baseline_dir", ""))
+def generate_baseline(args: argparse.Namespace, admin=False) -> None:
+    if admin:
+        build_path: Path = Path(config["defaults"].get("baseline_dir", ""))
+    else:
+        build_path: Path = Path(config["custom"].get("baseline_dir", ""))
     baseline_output_file: Path = (
         build_path / f"{args.keyword}_{args.os_name}_{args.os_version}.yaml"
     )
@@ -210,10 +213,6 @@ def generate_baseline(args: argparse.Namespace) -> None:
         )
         print_keyword_summary(all_tags, benchmark_map)
 
-    # baseline_dict: dict[str, Any] = mscp_data.get("baselines", {}).get(
-    #     args.keyword, {"title": "custom", "description": "custom"}
-    # )
-
     found_rules = [
         rule
         for rule in all_rules
@@ -226,8 +225,6 @@ def generate_baseline(args: argparse.Namespace) -> None:
     ]
 
     baseline_dict = {}
-    # baseline_dict["title"] = replace_vars(baseline_dict["title"])
-    # baseline_dict["description"] = replace_vars(baseline_dict["description"])
 
     if any(bm in args.keyword for bm in established_benchmarks):
         benchmark = args.keyword
@@ -241,17 +238,6 @@ def generate_baseline(args: argparse.Namespace) -> None:
 
             for each_author in normalized_authors:
                 authors.append(Author(**each_author))
-
-    # baseline_dict.pop("authors", None)
-
-    # if args.keyword == "disa_stig":
-    #     match args.os_name:
-    #         case "macos":
-    #             name = "Marco Piñeyro"
-    #         case "ios":
-    #             name = "Aaron Kegerreis"
-
-    #     authors[:] = [author for author in authors if author.name != name]
 
     if args.tailor:
         full_title = ""
@@ -278,16 +264,21 @@ def generate_baseline(args: argparse.Namespace) -> None:
             found_rules, benchmark
         )
 
-    Baseline.create_new(
-        output_file=baseline_output_file,
-        rules=odv_baseline_rules if args.tailor else found_rules,
-        baseline_name=baseline_name,
-        benchmark=benchmark,
-        authors=authors,
-        full_title=full_title,
-        os_type=args.os_name,
-        os_version=args.os_version,
-        baseline_dict=baseline_dict,
-    )
+    if found_rules:
+        Baseline.create_new(
+            output_file=baseline_output_file,
+            rules=odv_baseline_rules if args.tailor else found_rules,
+            baseline_name=baseline_name,
+            benchmark=benchmark,
+            authors=authors,
+            full_title=full_title,
+            os_type=args.os_name,
+            os_version=args.os_version,
+            baseline_dict=baseline_dict,
+        )
 
-    print(f"Generated new baseline file: {baseline_output_file}")
+        print(f"Generated new baseline file: {baseline_output_file}")
+    else:
+        logger.warning(
+            f"No rules found for {args.keyword} on {args.os_name} version {args.os_version}, skipping baseline generation."
+        )
