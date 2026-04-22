@@ -27,7 +27,7 @@ references:
     - SRG-OS-000077-GPOS-00045
     - SRG-OS-000775-GPOS-00230
   disa_stig:
-    - N/A
+    - APPL-15-003009
   800-171r3:
     - 03.05.07
   cis:
@@ -44,8 +44,8 @@ macOS:
 odv:
   hint: Number of previous passwords.
   recommended: 5
-  cis_lvl1: 15
-  cis_lvl2: 15
+  cis_lvl1: 24
+  cis_lvl2: 24
   stig: 5
 tags:
   - 800-171

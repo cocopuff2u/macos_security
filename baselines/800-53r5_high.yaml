@@ -106,6 +106,7 @@ profile:
       - os_policy_banner_ssh_enforce
       - os_recovery_lock_enable
       - os_root_disable
+      - os_safari_allow_javascript_disable
       - os_safari_reader_summary_disable
       - os_screensaver_loginwindow_enforce
       - os_secure_boot_verify

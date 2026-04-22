@@ -93,6 +93,7 @@ profile:
       - os_policy_banner_ssh_configure
       - os_policy_banner_ssh_enforce
       - os_root_disable
+      - os_safari_allow_javascript_disable
       - os_safari_reader_summary_disable
       - os_sip_enable
       - os_siri_prompt_disable
