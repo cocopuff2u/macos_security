@@ -34,7 +34,8 @@ To learn more, visit the [project website](http://pages.nist.gov/macos_security/
 ## Supported Frameworks
 
 - NIST SP 800-53
-- NIST SP 800-171
+- NIST SP 800-171r3
+- NIST SP 800-171r2 (CMMC)
 - CIS Benchmarks (Level 1, Level 2, v8)
 - CMMC (Level 1, Level 2)
 - CNSSI 1253
