@@ -36,7 +36,8 @@ To learn more, visit the [project website](http://pages.nist.gov/macos_security/
 - NIST SP 800-53
 - NIST SP 800-171r3
 - NIST SP 800-171r2 (CMMC)
-- CIS Benchmarks (Level 1, Level 2, v8)
+- CIS Benchmarks (Level 1 & 2)
+- CIS Controls (v8)
 - CNSSI 1253
 - DISA STIG (macOS, iOS, and visionOS)
 - BSI Indigo (iOS/iPadOS)
