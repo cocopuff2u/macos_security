@@ -19,6 +19,7 @@
 The macOS Security Compliance Project (mSCP) is an [open-source](LICENSE.md) project that helps organizations secure their Apple devices. You choose the security rules to enforce, and mSCP generates everything you need:
 
 - **Configuration profiles** to apply the rules
+- **Declarative Device Management (DDM)** assets for MDMs that support declarative delivery
 - **Documentation** to explain the setup
 - **Compliance scripts** to verify and enforce rules that profiles cannot
 
