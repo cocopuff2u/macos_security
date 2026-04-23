@@ -37,10 +37,9 @@ To learn more, visit the [project website](http://pages.nist.gov/macos_security/
 - NIST SP 800-171r3
 - NIST SP 800-171r2 (CMMC)
 - CIS Benchmarks (Level 1, Level 2, v8)
-- CMMC (Level 1, Level 2)
 - CNSSI 1253
 - DISA STIG (macOS, iOS, and visionOS)
-- iOS Indigo
+- BSI Indigo (iOS/iPadOS)
 - NLMAPGOV (Base and Plus, macOS and iOS)
 - HICP — Health Industry Cybersecurity Practices (Large Organizations, macOS)
 
