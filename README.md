@@ -1,4 +1,10 @@
-<p align="center"><img src="config/default/images/mscp_readme_banner.png" alt="macOS Security Compliance" width="550"></p>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="config/default/images/mscp_readme_banner_dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="config/default/images/mscp_readme_banner.png">
+    <img src="config/default/images/mscp_readme_banner.png" alt="macOS Security Compliance" width="550">
+  </picture>
+</p>
 
 <p align="center">
   <a href="https://www.apple.com/macos/"><img src="https://badgen.net/badge/icon/apple?icon=apple&label" alt="Apple"></a>
