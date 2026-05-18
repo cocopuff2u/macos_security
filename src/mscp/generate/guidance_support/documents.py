@@ -1565,24 +1565,34 @@ def generate_pdf_with_pymupdf(
         if not _all_links:
             continue
 
-        # Group word-level rects by (dest_page, rounded y0) → merge into one row rect
-        _rows: dict[tuple[int, int], list[pymupdf.Rect]] = {}
+        # Group word-level rects by their y-row on the TOC page.
+        # Keying by y (not dest page) preserves all entries even when multiple
+        # sections fall on the same content page.
+        _rows_by_y: dict[int, tuple[int, list[pymupdf.Rect]]] = {}
         for _lk in _all_links:
             _dest = _lk["page"]
             _display = _dest - foreword_pno + 1
             if _display < 1:
                 continue
             _r = pymupdf.Rect(_lk["from"])
-            _key = (_display, round(_r.y0))
-            _rows.setdefault(_key, []).append(_r)
+            _y = round(_r.y0)
+            if _y in _rows_by_y:
+                _rows_by_y[_y][1].append(_r)
+            else:
+                _rows_by_y[_y] = (_display, [_r])
 
-        # For entries that wrap (same dest, multiple y lines), use the last line only
-        _by_dest: dict[int, tuple[int, list[pymupdf.Rect]]] = {}
-        for (_display, _y_int), _rects in _rows.items():
-            if _display not in _by_dest or _y_int > _by_dest[_display][0]:
-                _by_dest[_display] = (_y_int, _rects)
+        # For wrapped TOC entries (same dest page, consecutive lines ≤15pt apart)
+        # only render the last line so the page number lands at the entry's end.
+        _y_sorted = sorted(_rows_by_y)
+        _skip: set[int] = set()
+        for _i in range(len(_y_sorted) - 1):
+            _ya, _yb = _y_sorted[_i], _y_sorted[_i + 1]
+            if _rows_by_y[_ya][0] == _rows_by_y[_yb][0] and (_yb - _ya) <= 15:
+                _skip.add(_ya)
 
-        for _display, (_y_int, _rects) in _by_dest.items():
+        for _y_int, (_display, _rects) in _rows_by_y.items():
+            if _y_int in _skip:
+                continue
             _text_x1 = max(r.x1 for r in _rects)
             _baseline = _rects[0].y1 - 1.5   # text baseline
 
