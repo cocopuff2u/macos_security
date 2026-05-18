@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="{{ language }}">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ html_title }}: {{ html_subtitle }}</title>
+<style>
+{{ css_content }}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+{{ pygments_css }}
+pre.rouge.highlight { background-color: #f8f8f8; }
+.listingblock { position: relative; }
+.listingblock .content pre {
+  border: 1px solid #d0d0d0;
+  border-radius: 3px;
+  padding: 0.75em 1em;
+  overflow-x: auto;
+  background-color: #f8f8f8;
+}
+.lang-label, .copy-btn {
+  position: absolute; top: 5px;
+  background: rgba(255,255,255,0.88); border: 1px solid #ccc;
+  border-radius: 3px; padding: 2px 6px; font-size: 0.75em;
+  line-height: 1.4; color: #555; opacity: 0;
+  transition: opacity 0.15s; pointer-events: none; z-index: 1;
+}
+.lang-label { left: 6px; font-family: monospace; }
+.copy-btn { right: 6px; cursor: pointer; pointer-events: none; }
+.listingblock code[data-lang]::before,
+.listingblock:hover code[data-lang]::before { display: none !important; }
+.listingblock:hover .lang-label,
+.listingblock:hover .copy-btn { opacity: 1; pointer-events: auto; }
+.copy-btn:hover { background: #e8e8e8; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.listingblock').forEach(block => {
+    const code = block.querySelector('code[data-lang]');
+    const lang = code ? code.getAttribute('data-lang') : null;
+
+    if (lang) {
+      const label = document.createElement('span');
+      label.className = 'lang-label';
+      label.textContent = lang;
+      block.appendChild(label);
+    }
+
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.title = 'Copy to clipboard';
+    btn.innerHTML = '&#x2398;';
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(code ? code.innerText : '').then(() => {
+        btn.innerHTML = '&#x2713;';
+        setTimeout(() => { btn.innerHTML = '&#x2398;'; }, 1500);
+      });
+    });
+    block.appendChild(btn);
+  });
+});
+</script>
+</head>
+<body class="book">
+<div id="header">
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="title-page">
+<div class="paragraph">
+<p><span class="image"><img src="data:image/png;base64,{{ pdflogo }}" alt="MSCP Banner" style="max-width:100%;display:block;margin:0 auto;"></span></p>
+</div>
+  <div class="document-info" id="os" name="{{ os_version }}">
+    <h1 class="doctitle">{{ html_title }}</h1>
+    <h2 class="docsub">{{ html_subtitle }}</h2>
+    {% if document_subtitle2 and document_subtitle2 != ":document-subtitle2:" %}
+    <h3 class="docver">{{ document_subtitle2 | replace(":document-subtitle2:", "") | trim }}</h3>
+    {% endif %}
+    <h3 class="docver">{{ version }} ({{ release_date }})</h3>
+  </div>
+</div>
+</div>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_foreword">1. Foreword</a></li>
+<li><a href="#_scope">2. Scope</a></li>
+<li><a href="#_authors">3. Authors</a></li>
+<li><a href="#_acronyms_and_definitions">4. Acronyms and Definitions</a></li>
+<li><a href="#_applicable_documents">5. Applicable Documents</a>
+<ul class="sectlevel2">
+<li><a href="#_government_documents">5.1. Government Documents</a></li>
+<li><a href="#_non_government_documents">5.2. Non-Government Documents</a></li>
+</ul>
+</li>
+{% for profile in baseline.profile %}
+{% set section_num = loop.index + 5 %}
+<li><a href="#{{ profile.section | to_anchor_id }}">{{ section_num }}. {{ profile.section }}</a>
+{% if profile.rules %}
+<ul class="sectlevel2">
+{% for rule in profile.rules %}
+<li><a href="#{{ rule.title | to_anchor_id }}">{{ section_num }}.{{ loop.index }}. {{ rule.title }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+</li>
+{% endfor %}
+</ul>
+</div>

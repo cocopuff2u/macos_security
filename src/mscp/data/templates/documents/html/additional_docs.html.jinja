@@ -1,0 +1,203 @@
+<div class="sect1">
+<h2 id="_applicable_documents">5. Applicable Documents</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_government_documents">5.1. Government Documents</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. National Institute of Standards and Technology (NIST)</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Number or Descriptor</td>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Title</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://nvd.nist.gov/800-53">NIST Special Publication 800-53 Rev 5</a></p></div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>NIST Special Publication 800-53 Rev 5.2.0</em></p></div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://pages.nist.gov/800-63-4/">NIST SP 800-63 Digital Identity Guidelines</a></p></div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>NIST Special Publication 800-63 Rev 4</em></p></div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://csrc.nist.gov/pubs/sp/800/171/r3/final">NIST Special Publication 800-171</a></p></div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>NIST Special Publication 800-171 Rev 3</em></p></div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://csrc.nist.gov/pubs/sp/800/219/r1/final">NIST Special Publication 800-219</a></p></div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>NIST Special Publication 800-219 Rev 1</em></p></div></div></td>
+</tr>
+</tbody>
+</table>
+
+{% if "STIG" in baseline.title.upper() %}
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. Defense Information Systems Agency (DISA)</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Number or Descriptor</td>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Title</td>
+</tr>
+</tbody>
+<tbody>
+{% if os_name == "macos" %}
+{% if os_version == "26.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_macOS_26_V1R1_STIG.zip">STIG Ver 1, Rel 1</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple macOS 26 (Tahoe) STIG</em></p></div></div></td></tr>
+{% elif os_version == "15.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_macOS_15_V1R1_STIG.zip">STIG Ver 1, Rel 1</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple macOS 15 (Sequoia) STIG</em></p></div></div></td></tr>
+{% elif os_version == "14.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_macOS_14_V1R1_STIG.zip">STIG Ver 1, Rel 1</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple macOS 14 (Sonoma) STIG</em></p></div></div></td></tr>
+{% elif os_version == "13.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_macOS_13_V1R3_STIG.zip">STIG Ver 1, Rel 3</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple macOS 13 (Ventura) STIG</em></p></div></div></td></tr>
+{% elif os_version == "12.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_macOS_12_V1R8_STIG.zip">STIG Ver 1, Rel 8</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple macOS 12 (Monterey) STIG</em></p></div></div></td></tr>
+{% endif %}
+{% elif os_name == "ios" %}
+{% if os_version == "18.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_iOS-iPadOS_18_V1R4_STIG.zip">STIG Ver 1, Rel 4</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple iOS/iPadOS 18 STIG - Ver 1, Rel 4</em></p></div></div></td></tr>
+{% elif os_version == "17.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_iOS-iPadOS_17_V2R1_STIG.zip">STIG Ver 2, Rel 1</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple iOS/iPadOS 17 STIG - Ver 2, Rel 1</em></p></div></div></td></tr>
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_iOS-iPadOS_17_BYOAD_Y24M02_STIG.zip">STIG Ver 1, Rel 1</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple iOS/iPadOS 17 BYOAD STIG - Ver 1, Rel 1</em></p></div></div></td></tr>
+{% elif os_version == "16.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_iOS-iPadOS_16_V2R1_STIG.zip">STIG Ver 2, Rel 1</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple iOS/iPadOS 16 STIG - Ver 2, Rel 1</em></p></div></div></td></tr>
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_iOS-iPadOS_16_BYOAD_Y23M08_STIG.zip">STIG Ver 1, Rel 1</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple iOS/iPadOS 16 BYOAD STIG - Ver 1, Rel 1</em></p></div></div></td></tr>
+{% endif %}
+{% elif os_name == "visionos" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_Apple_visionOS_2_Y25M09_STIG.zip">STIG Ver 1, Rel 1</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple visionOS 2 STIG - Ver 1, Rel 1</em></p></div></div></td></tr>
+{% elif os_name == "ubuntu" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_CAN_Ubuntu_22-04_LTS_V2R7_STIG.zip">STIG Ver 2, Rel 7</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Canonical Ubuntu 22.04 LTS STIG - Ver 2, Rel 7</em></p></div></div></td></tr>
+{% endif %}
+</tbody>
+</table>
+{% endif %}
+
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. Cybersecurity Maturity Model Certification (CMMC)</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Number or Descriptor</td>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Title</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://dodcio.defense.gov/Portals/0/Documents/CMMC/ModelOverview_V2.0_FINAL2_20211202_508.pdf">CMMC Model Overview v2.0</a></p></div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Cybersecurity Maturity Model Certification (CMMC) Model Overview v2.0</em></p></div></div></td>
+</tr>
+</tbody>
+</table>
+
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. Committee on National Security Systems (CNSS)</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Number or Descriptor</td>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Title</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://www.cnss.gov/CNSS/issuances/Instructions.cfm">CNSSI No. 1253</a></p></div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Security Categorization and Control Selection for National Security Systems</em></p></div></div></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+<div class="sect2">
+<h3 id="_non_government_documents">5.2. Non-Government Documents</h3>
+
+{% if os_name in ["macos", "ios", "visionos"] %}
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 6. Apple</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Number or Descriptor</td>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Title</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://support.apple.com/guide/security/welcome/web">Apple Platform Security Guide</a></p></div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple Platform Security</em></p></div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://support.apple.com/guide/deployment/welcome/web">Apple Platform Deployment</a></p></div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple Platform Deployment</em></p></div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://support.apple.com/guide/certifications/welcome/web">Apple Platform Certifications</a></p></div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Apple Platform Certifications</em></p></div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://developer.apple.com/documentation/devicemanagement/profile-specific_payload_keys">Profile-Specific Payload Keys</a></p></div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Profile-Specific Payload Keys</em></p></div></div></td>
+</tr>
+</tbody>
+</table>
+{% endif %}
+
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 7. Center for Internet Security</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Number or Descriptor</td>
+<td class="tableblock halign-left valign-top" style="font-weight:bold;">Document Title</td>
+</tr>
+</tbody>
+<tbody>
+{% if os_name == "macos" %}
+{% if os_version == "26.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://www.cisecurity.org/benchmark/apple_os/">Apple macOS 26.0</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>CIS Apple macOS 26.0 Benchmark</em></p></div></div></td></tr>
+{% elif os_version == "15.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://www.cisecurity.org/benchmark/apple_os/">Apple macOS 15.0</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>CIS Apple macOS 15.0 Benchmark version 1.0.0</em></p></div></div></td></tr>
+{% elif os_version == "14.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://www.cisecurity.org/benchmark/apple_os/">Apple macOS 14.0</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>CIS Apple macOS 14.0 Benchmark version 2.0.0</em></p></div></div></td></tr>
+{% elif os_version == "13.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://www.cisecurity.org/benchmark/apple_os/">Apple macOS 13.0</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>CIS Apple macOS 13.0 Benchmark version 3.0.0</em></p></div></div></td></tr>
+{% elif os_version == "12.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://www.cisecurity.org/benchmark/apple_os/">Apple macOS 12.0</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>CIS Apple macOS 12.0 Benchmark version 3.1.0</em></p></div></div></td></tr>
+{% endif %}
+{% elif os_name == "ios" %}
+{% if os_version == "18.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://www.cisecurity.org/benchmark/apple_ios">Apple iOS/iPadOS</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>CIS Apple iOS 18 and iPadOS 18 Version 1.0.0</em></p></div></div></td></tr>
+{% elif os_version == "17.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://www.cisecurity.org/benchmark/apple_ios">Apple iOS/iPadOS</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>CIS Apple iOS 17 and iPadOS 17 Version 1.1.0</em></p></div></div></td></tr>
+{% elif os_version == "16.0" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://www.cisecurity.org/benchmark/apple_ios">Apple iOS/iPadOS</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>CIS Apple iOS 16 and iPadOS 16 Version 1.1.0</em></p></div></div></td></tr>
+{% endif %}
+{% elif os_name == "ubuntu" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><a href="https://www.cisecurity.org/benchmark/ubuntu_linux">Ubuntu Linux</a></p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>CIS Ubuntu Linux 24.04 LTS Benchmark v1.0.0</em></p></div></div></td></tr>
+{% elif os_name == "visionos" %}
+<tr><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p>Apple visionOS</p></div></div></td><td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph"><p><em>Currently Unavailable</em></p></div></div></td></tr>
+{% endif %}
+</tbody>
+</table>
+</div>
+</div>
+</div>

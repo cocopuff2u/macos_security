@@ -1,0 +1,20 @@
+<h2>Table of Contents</h2>
+<ul class="toc">
+<li><a href="#_foreword">1. {% trans %}Foreword{% endtrans %}</a></li>
+<li><a href="#_scope">2. {% trans %}Scope{% endtrans %}</a></li>
+<li><a href="#_authors">3. {% trans %}Authors{% endtrans %}</a></li>
+<li><a href="#_acronyms_and_definitions">4. Acronyms and Definitions</a></li>
+<li><a href="#_applicable_documents">5. Applicable Documents</a></li>
+{% for profile in baseline.profile %}
+{% set section_num = loop.index + 5 %}
+<li><a href="#{{ profile.section | to_anchor_id }}">{{ section_num }}. {{ profile.section }}</a>
+{% if profile.rules %}
+<ul>
+{% for rule in profile.rules %}
+<li><a href="#{{ rule.rule_id }}">{{ section_num }}.{{ loop.index }}. {{ rule.title }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+</li>
+{% endfor %}
+</ul>
