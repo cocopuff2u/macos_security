@@ -784,10 +784,10 @@ img         { max-width: 100%; }
 .note       { padding: 2pt 0; margin: 10pt 0; font-size: 10.5pt; }
 .remediation-title  { font-weight: bold; margin: 12pt 0 6pt 0; font-size: 10.5pt; }
 .refs               { margin-top: 16pt; break-inside: avoid; page-break-inside: avoid; }
-.ref-label          { font-weight: bold; padding: 3pt 8pt; vertical-align: top; }
-.refs th, .refs td  { border: none; }
-.refs td ul         { margin: 0; padding-left: 14pt; }
-.refs td li         { margin: 0; line-height: 1.5; }
+.ref-label          { font-weight: bold; }
+.refs th, .refs td  { border: none; padding: 5pt 8pt; vertical-align: top; }
+.refs td ul         { margin: 0; padding: 0 0 0 16pt; }
+.refs td li         { margin: 0; padding: 0; line-height: 1.4; }
 """
 
 # Pre-compiled patterns used by PDF detection functions (avoid recompilation per call)
@@ -1277,11 +1277,11 @@ def generate_pdf_with_pymupdf(
     #   refs table:  stroke=#dddddd  width=0.5
     _CODE_FILL    = (0.9608, 0.9608, 0.9608)   # #f5f5f5
     _CODE_STROKE  = (0.8,    0.8,    0.8   )   # #cccccc
-    _REF_STROKE   = (0.8667, 0.8667, 0.8667)   # #dddddd
+    _REF_STROKE   = (0.7333, 0.7333, 0.7333)   # #bbbbbb
     _CODE_R_PT = 4  # border-radius in points
     _CODE_W  = 0.75
     _REF_W   = 0.5
-    _OD = MX + 80   # outer refs vertical divider x (label col | value col)
+    _OD = MX + 100  # outer refs vertical divider x — matches <col style="width:100pt"/>
     _KAPPA = 0.5523  # cubic bezier kappa for circular arc approximation
 
     # Ref-row label spans in the left column (one per row after "ID")
@@ -1377,24 +1377,45 @@ def generate_pdf_with_pymupdf(
         # Collect them all then draw; reset state at each rule heading.
         # Flat refs table: rows are ID, 800-53r5, CCE, etc. — no nested tables.
         # Each th.ref-label span in the left column (x < MX+40, Bold) signals a new row.
-        _refs_tables = []
-        _rt_y0 = None
-        _rt_y1 = None
-        _rt_row_ys = []   # y0 of each row after the first (for horizontal dividers)
+        _refs_tables: list[tuple] = []
+        _rt_y0: float | None = None
+        _rt_y1: float | None = None
+        _rt_row_ys: list[float] = []
+        _rt_continuation = False  # True when table started without an ID row (cross-page split)
 
-        # Cross-page continuation: if the page starts with a ref-label Bold span
-        # at the left margin (y < 80) that is NOT "ID", the table continued from
-        # the previous page — seed _rt_y0 so row detection proceeds normally.
+        def _left_label_groups(spans: list) -> list[list[tuple[float, str]]]:
+            """Return left-column bold spans grouped into label cells.
+
+            Spans within 15 pt of each other vertically belong to the same
+            wrapped label (e.g. "CIS" + "Benchmark" → "CIS Benchmark").
+            Returns list of groups; each group is [(y0, text), …].
+            """
+            left = sorted(
+                (s["bbox"][1], s.get("text", "").strip())
+                for s in spans
+                if s["bbox"][0] < _OD and "Bold" in s.get("font", "")
+            )
+            groups: list[list[tuple[float, str]]] = []
+            for _y, _t in left:
+                if groups and (_y - groups[-1][-1][0]) <= 15:
+                    groups[-1].append((_y, _t))
+                else:
+                    groups.append([(_y, _t)])
+            return groups
+
+        # Cross-page seed: if the first block on this page begins with an
+        # _INNER_STD ref-label (no "ID" row visible), the refs table from the
+        # previous page continues here — seed _rt_y0 so detection proceeds.
         for _cb in _blks:
             if "lines" not in _cb:
                 continue
             _cb_spans = [s for _l in _cb["lines"] for s in _l.get("spans", [])]
-            if (_cb["bbox"][1] < 80 and any(
-                    s.get("text", "").strip() in _INNER_STD
-                    and s["bbox"][0] < MX + 40
-                    and "Bold" in s.get("font", "")
-                    for s in _cb_spans)):
-                _rt_y0 = _cb["bbox"][1] - 4
+            for _grp in _left_label_groups(_cb_spans):
+                _lbl = " ".join(t for _, t in _grp).strip()
+                if _lbl in _INNER_STD and _cb["bbox"][1] < 80:
+                    _rt_y0 = _grp[0][0]  # span y0, consistent with _row_ys
+                    _rt_continuation = True
+                    break
             break
 
         for _b in _blks:
@@ -1406,42 +1427,49 @@ def generate_pdf_with_pymupdf(
             # A new rule heading (h3/h2) commits and resets state
             if any(s.get("size", 0) > 14 for s in _bspans):
                 if _rt_y0 is not None:
-                    _refs_tables.append((_rt_y0, _rt_y1, list(_rt_row_ys)))
-                _rt_y0 = None; _rt_y1 = None; _rt_row_ys = []
+                    _refs_tables.append((_rt_y0, _rt_y1, list(_rt_row_ys), _rt_continuation))
+                _rt_y0 = None; _rt_y1 = None; _rt_row_ys = []; _rt_continuation = False
                 continue
+
+            _b_groups = _left_label_groups(_bspans)
 
             if _rt_y0 is None:
                 # Look for "ID" label to start a refs table
-                for _s in _bspans:
-                    if (_s.get("text", "").strip() == "ID"
-                            and _s["bbox"][0] < MX + 40
-                            and "Bold" in _s.get("font", "")):
-                        _rt_y0 = _by0
+                for _grp in _b_groups:
+                    if " ".join(t for _, t in _grp).strip() == "ID":
+                        _rt_y0 = _grp[0][0]  # span y0, consistent with _row_ys
                         _rt_y1 = _by1
                         break
-                continue
+                if _rt_y0 is None:
+                    continue
+                # Fall through: the same block may contain other ref labels
+                # when Story extracts the entire label column as one block.
 
             _rt_y1 = _by1
 
-            # Each new ref-label Bold span in the left column = new row divider
-            for _s in _bspans:
-                if (_s.get("text", "").strip() in _INNER_STD
-                        and _s["bbox"][0] < MX + 40
-                        and "Bold" in _s.get("font", "")):
-                    if not _rt_row_ys or abs(_by0 - _rt_row_ys[-1]) > 3:
-                        _rt_row_ys.append(_by0)
-                    break
+            # Each label group matching _INNER_STD = a new row divider.
+            # Use the span's own y0 so dividers land correctly even when
+            # multiple labels share the same text block (column extraction).
+            for _grp in _b_groups:
+                _lbl = " ".join(t for _, t in _grp).strip()
+                if _lbl in _INNER_STD:
+                    _sy0 = _grp[0][0]
+                    if not _rt_row_ys or abs(_sy0 - _rt_row_ys[-1]) > 3:
+                        _rt_row_ys.append(_sy0)
 
         if _rt_y0 is not None:
-            _refs_tables.append((_rt_y0, _rt_y1, list(_rt_row_ys)))
+            _refs_tables.append((_rt_y0, _rt_y1, list(_rt_row_ys), _rt_continuation))
 
         _LABEL_FILL = (0.910, 0.925, 0.957)   # #e8ecf4 — left label column
 
-        for (_ry0, _ry1, _row_ys) in _refs_tables:
+        for (_ry0, _ry1, _row_ys, _is_continuation) in _refs_tables:
             if _ry1 is None:
                 continue
-            _T = _ry0 - 2
-            _B = _ry1 + 2
+            # _ry0/_ry1 are span-y0/block-y1 (text edges, no padding).
+            # Cell padding is 5pt top/bottom; outer box aligns exactly with cell edges.
+            _PAD = 5
+            _T = _ry0 - _PAD
+            _B = _ry1 + _PAD
 
             # Left label column background
             _page.draw_rect(
@@ -1458,9 +1486,14 @@ def generate_pdf_with_pymupdf(
                 pymupdf.Point(_OD, _T), pymupdf.Point(_OD, _B),
                 color=_REF_STROKE, width=_REF_W,
             )
-            # Horizontal row dividers
-            for _ry in _row_ys:
-                _dy = _ry - 2
+            # Horizontal row dividers — placed at the cell boundary, which is
+            # exactly _PAD points above the span's text y0.
+            # On continuation pages skip the first entry (it's at _ry0, which
+            # would overlap the outer box top border).
+            for _i, _ry in enumerate(_row_ys):
+                if _is_continuation and _i == 0:
+                    continue
+                _dy = _ry - _PAD
                 _page.draw_line(
                     pymupdf.Point(BODY.x0, _dy), pymupdf.Point(BODY.x1, _dy),
                     color=_REF_STROKE, width=_REF_W,
@@ -1672,9 +1705,8 @@ def generate_pdf_with_pymupdf(
     # ── Insert cover page at index 0 (PyMuPDF auto-updates GoTo link targets) ──
     cover = doc.new_page(pno=0, width=W, height=H)
 
-    # Logo — exact dimensions from original: x=[48, 547], y=[112, 192]
     cover.insert_image(
-        pymupdf.Rect(48, 112, 547, 192),
+        pymupdf.Rect(48, 80, 547, 310),
         stream=logo_bytes,
         keep_proportion=True,
     )
@@ -1713,13 +1745,17 @@ def generate_pdf_with_pymupdf(
     # Cover page was inserted at pno=0, shifting all story pages by +1.
     # h2 → level 1, h3 → level 2 — matches the reference asciidoctor-pdf structure.
     _toc = [[1, footer_doc_title, 1]]  # document title → cover page
+    _prev_toc_level = 1
     for _pos in _heading_positions:
-        _level = _pos.heading - 1  # h2→1, h3→2
+        _level = _pos.heading - 1  # h2→1, h3→2, h4+→deeper
         if _level < 1:
             continue
+        # PyMuPDF forbids skipping levels (e.g. 1→3); cap at prev+1.
+        _level = min(_level, _prev_toc_level + 1)
         _page = _pos.page_num + 1  # +1 for inserted cover page (1-based)
         _dest = {"kind": 1, "page": _page - 1, "to": pymupdf.Point(_pos.rect[0], _pos.rect[1]), "zoom": 0}
         _toc.append([_level, _pos.text.strip(), _page, _dest])
+        _prev_toc_level = _level
     doc.set_toc(_toc)
 
     doc.save(str(pdf_file), deflate=True, garbage=4, use_objstms=True, deflate_fonts=True, deflate_images=True)
