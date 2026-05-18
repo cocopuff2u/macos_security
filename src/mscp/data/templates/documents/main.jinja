@@ -2,6 +2,8 @@
 {% include "adoc/header.adoc.jinja" %}
 {% elif format == "markdown" %}
 {% include "markdown/header.md.jinja" %}
+{% elif format in ["html", "pdf"] %}
+{% if format == "html" %}{% include "html/header.html.jinja" %}{% else %}{% include "pdf/header.html.jinja" %}{% endif %}
 {% endif %}
 
 {% include "foreword.jinja" %}
@@ -16,8 +18,42 @@
 {% include "adoc/additional_docs.adoc.jinja" %}
 {% elif format == "markdown" %}
 {% include "markdown/additional_docs.md.jinja" %}
+{% elif format in ["html", "pdf"] %}
+{% include "html/additional_docs.html.jinja" %}
 {% endif %}
 
+{% if format == "html" %}
+{% for profile in baseline.profile %}
+{% set section_num = loop.index + 5 %}
+<div class="sect1">
+<h2 id="{{ profile.section | to_anchor_id }}">{{ section_num }}. {{ profile.section }}</h2>
+<div class="sectionbody">
+{{ profile.description | asciidoc_to_html }}
+{% for rule in profile.rules %}
+{% set rule_num = loop.index %}
+<div class="sect2">
+{% include "html/rule.html.jinja" %}
+</div>
+{% endfor %}
+</div>
+</div>
+{% endfor %}
+</div></body></html>
+{% elif format == "pdf" %}
+{% for profile in baseline.profile %}
+{% set section_num = loop.index + 5 %}
+<div class="sect1">
+<h2 id="{{ profile.section | to_anchor_id }}">{{ section_num }}. {{ profile.section }}</h2>
+{{ profile.description | asciidoc_to_html }}
+{% for rule in profile.rules %}
+{% set rule_num = loop.index %}
+{% include "pdf/rule.html.jinja" %}
+{% endfor %}
+</div>
+{% endfor %}
+</body></html>
+{% else %}
 {% for profile in baseline.profile +%}
 {% include "section.jinja" %}
 {% endfor %}
+{% endif %}

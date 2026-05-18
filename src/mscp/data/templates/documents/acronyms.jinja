@@ -1,6 +1,6 @@
-{{ "== Acronyms and Definitions" if format == "adoc" else "## Acronyms and Definitions" }}
-
 {% if format == "adoc" %}
+== Acronyms and Definitions
+
 .Acronyms and Abbreviations
 [cols="1,3"]
 |===
@@ -16,7 +16,97 @@
 | {{ term.term }} | {{ term.definition }}
 {% endfor %}
 |===
-{% elif format == "markdown" %}
+{% elif format == "html" %}
+<div class="sect1">
+<h2 id="_acronyms_and_definitions">4. Acronyms and Definitions</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_acronyms_and_abbreviations">Acronyms and Abbreviations</h3>
+<table class="tableblock frame-all grid-all stretch" style="table-layout:fixed;width:100%;">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" style="width:25%;">Term</th>
+<th class="tableblock halign-left valign-top" style="width:75%;">Definition</th>
+</tr>
+</thead>
+<tbody>
+{% for acronym in acronyms %}
+<tr>
+<td class="tableblock halign-left valign-top" style="width:25%;"><p class="tableblock">{{ acronym.term }}</p></td>
+<td class="tableblock halign-left valign-top" style="width:75%;"><p class="tableblock">{{ acronym.definition }}</p></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_definitions">Definitions</h3>
+<table class="tableblock frame-all grid-all stretch" style="table-layout:fixed;width:100%;">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" style="width:25%;">Term</th>
+<th class="tableblock halign-left valign-top" style="width:75%;">Definition</th>
+</tr>
+</thead>
+<tbody>
+{% for term in terminology %}
+<tr>
+<td class="tableblock halign-left valign-top" style="width:25%;"><p class="tableblock">{{ term.term }}</p></td>
+<td class="tableblock halign-left valign-top" style="width:75%;"><p class="tableblock">{{ term.definition }}</p></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+{% elif format == "pdf" %}
+<div class="sect1">
+<h2 id="_acronyms_and_definitions">4. Acronyms and Definitions</h2>
+<div class="sectionbody">
+<div class="title">Table 1. Acronyms and Abbreviations</div>
+<table class="tableblock frame-all grid-all stretch" style="border-collapse:collapse;width:100%;">
+<colgroup>
+<col style="width:25%;">
+<col style="width:75%;">
+</colgroup>
+<tbody>
+{% for acronym in acronyms %}
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{{ acronym.term }}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{{ acronym.definition }}</p></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<div class="title">Table 2. Definitions</div>
+<table class="tableblock frame-all grid-all stretch" style="border-collapse:collapse;width:100%;">
+<colgroup>
+<col style="width:25%;">
+<col style="width:75%;">
+</colgroup>
+<tbody>
+{% for term in terminology %}
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{{ term.term }}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{{ term.definition }}</p></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+{% else %}
+## Acronyms and Definitions
+
 ### Acronyms and Abbreviations
 
 <table>

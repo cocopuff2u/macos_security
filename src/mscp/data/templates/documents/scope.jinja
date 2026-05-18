@@ -1,5 +1,8 @@
 
-{{ "== " if format == "adoc" else "## " }}{% trans %}Scope{% endtrans %}
+{% if format == "adoc" %}== {% trans %}Scope{% endtrans %}
+{% elif format in ["html", "pdf"] %}<h2 id="_scope">2. {% trans %}Scope{% endtrans %}</h2>
+{% else %}## {% trans %}Scope{% endtrans %}
+{% endif %}
 
 {% if not baseline.tailored %}
 

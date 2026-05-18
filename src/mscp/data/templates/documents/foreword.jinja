@@ -1,5 +1,24 @@
-{{ "== " if format == "adoc" else "## " }}{% trans %}Foreword{% endtrans %}
+{% if format == "adoc" %}
+== {% trans %}Foreword{% endtrans %}
+{% elif format in ["html", "pdf"] %}
+<div class="sect1">
+<h2 id="_foreword">1. {% trans %}Foreword{% endtrans %}</h2>
+<div class="sectionbody">
+{% else %}
+## {% trans %}Foreword{% endtrans %}
+{% endif %}
 
+{% if format in ["html", "pdf"] %}
+<div class="paragraph"><p>{% trans %}The macOS Security Compliance Project is an open source effort to provide a programmatic approach to generating security guidance. The configuration settings in this document were derived from National Institute of Standards and Technology (NIST) Special Publication (SP) 800-53, <em>Security and Privacy Controls for Information Systems and Organizations</em>, Revision 5.{% endtrans %}</p></div>
+
+<div class="paragraph"><p>{% trans %}This project can be used as a resource to easily create customized security baselines of technical security controls by leveraging a library of atomic actions which are mapped to the compliance requirements defined in NIST SP 800-53 (Rev. 5). It can also be used to develop customized guidance to meet the particular cybersecurity needs of any organization.{% endtrans %}</p></div>
+
+<div class="paragraph"><p>{% trans %}The objective of this effort was to simplify and radically accelerate the process of producing up-to-date macOS security guidance that is also accessible to any organization and tailorable to meet each organization's specific security needs.{% endtrans %}</p></div>
+
+<div class="paragraph"><p>{% trans %}Any and all risk based decisions to tailor the content produced by this project in order to meet the needs of a specific organization shall be approved by the responsible Information System Owner (ISO) and Authorizing Official (AO) and formally documented in their System Security Plan (SSP). While the project attempts to provide settings to meet compliance requirements, it is recommended that each rule be reviewed by your organization's Information System Security Officer (ISSO) prior to implementation.{% endtrans %}</p></div>
+</div>
+</div>
+{% else %}
 {% trans %}The macOS Security Compliance Project is an open source effort to provide a programmatic approach to generating security guidance. The configuration settings in this document were derived from National Institute of Standards and Technology (NIST) Special Publication (SP) 800-53, _Security and Privacy Controls for Information Systems and Organizations_, Revision 5.{% endtrans %}
 
 
@@ -10,3 +29,4 @@
 
 
 {% trans %}Any and all risk based decisions to tailor the content produced by this project in order to meet the needs of a specific organization shall be approved by the responsible Information System Owner (ISO) and Authorizing Official (AO) and formally documented in their System Security Plan (SSP). While the project attempts to provide settings to meet compliance requirements, it is recommended that each rule be reviewed by your organization's Information System Security Officer (ISSO) prior to implementation.{% endtrans %}
+{% endif %}
